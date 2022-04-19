@@ -7,13 +7,13 @@ import Navbar from "../layouts/navbar/partialNavbar";
 import Button from "../layouts/buttons";
 
 const SignIn = () => {
-  const [username, setUsername] = useState(null);
+  const [userName, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const errorCheck = () => {
-    if (!username) return "Username field must not be empty";
-    if (username.length < 6)
+    if (!userName) return "Username field must not be empty";
+    if (userName.length < 6)
       return "Username length must be more than 6 characters";
     if (!password) return "Password field must not be empty";
     if (password.length < 6)
@@ -24,8 +24,14 @@ const SignIn = () => {
   const onSubmit = () => () => {
     const error = errorCheck();
     setError(error);
+
     if (!error) {
-      dispatch(userSlice.thunks.signup({ username, password }));
+      dispatch(
+        userSlice.thunks.signup(
+          { userName, password },
+          console.log("heyheyhey")
+        )
+      );
     }
   };
   return (
