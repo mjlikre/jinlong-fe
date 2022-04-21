@@ -6,7 +6,7 @@ import * as userSlice from "../../store/users";
 import Navbar from "../layouts/navbar/partialNavbar";
 import Button from "../layouts/buttons";
 
-const SignIn = () => {
+const SignUp = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
@@ -83,4 +83,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
