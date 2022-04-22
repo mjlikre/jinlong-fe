@@ -5,7 +5,7 @@ export const signin =
   async () => {
     try {
       const res = await axios.post(
-        "http://localhost:3001/users/login",
+        "https://jinlong-backend.herokuapp.com/login",
         loginInfo
       );
       localStorage.setItem("token", res.data.token);

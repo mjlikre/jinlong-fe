@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import * as userSlice from "../../store/users";
 
 import Navbar from "../layouts/navbar/partialNavbar";
-import Button from "../layouts/buttons";
+import Button from "../generics/buttons";
 
 const SignUp = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+
   const errorCheck = () => {
     if (!username) return "Username field must not be empty";
     if (username.length < 6)

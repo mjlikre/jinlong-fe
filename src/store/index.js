@@ -43,13 +43,13 @@ export const initialState = {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducers = combineReducers({
-  cashflowReducers,
-  inventoryReducers,
-  providerReducers,
-  clientReducers,
-  purchasesReducers,
-  salesReducers,
-  usersReducers,
+  cashflow: cashflowReducers,
+  inventory: inventoryReducers,
+  provider: providerReducers,
+  client: clientReducers,
+  purchases: purchasesReducers,
+  sales: salesReducers,
+  users: usersReducers,
 });
 
 export const store = createStore(

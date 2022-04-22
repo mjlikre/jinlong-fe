@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../navbar";
-const BaseLayouts = ({ children }) => {
+import { useNavigate } from "react-router-dom";
+
+const BaseLayouts = ({ children, className }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const authentication = localStorage.getItem("token");
+    // !authentication && navigate("/signin");
+  });
   return (
     <>
       <Navbar />
-      <div>{children}</div>
+      <div className={`py-10 px-24 h-screen bg-slate-100 ${className}`}>
+        {children}
+      </div>
     </>
   );
 };
