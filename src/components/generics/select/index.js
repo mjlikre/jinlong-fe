@@ -1,14 +1,7 @@
 import React from "react";
 import { List } from "react-feather";
 
-const Select = ({ providers = [], label }) => {
-  const renderOptions = () => {
-    providers.map((provider, index) => (
-      <option key={index}>
-        {`${provider.providerName} - ${provider.contactFirstName}`}
-      </option>
-    ));
-  };
+const Select = ({ renderOptions, label, onChange }) => {
   return (
     <div className="md:flex md:items-center mb-6">
       <div className="md:w-1/3">
@@ -18,12 +11,12 @@ const Select = ({ providers = [], label }) => {
       </div>
       <div className="md:w-2/3 relative">
         <select
-          class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          id="grid-state"
+          onChange={onChange}
+          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         >
-          {renderOptions()}
+          {renderOptions}
         </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
           <List className="w-6 h-6" />
         </div>
       </div>

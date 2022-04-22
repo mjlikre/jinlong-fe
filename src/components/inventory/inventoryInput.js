@@ -9,6 +9,15 @@ const InventoryInput = () => {
   const [quantity, setQuantity] = useState(0);
   const [priceToSell, setPriceToSell] = useState(0);
   const [provider, setProvicer] = useState("");
+  const providerList = [
+    { providerFirstName: "Wade Cooper", providerName: "lol" },
+    { providerFirstName: "Wade Cooper", providerName: "lel" },
+    { providerFirstName: "Wade Cooper", providerName: "jil;" },
+    { providerFirstName: "Wade Cooper", providerName: "asdf" },
+    { providerFirstName: "Wade Cooper", providerName: "asdf" },
+    { providerFirstName: "Wade Cooper", providerName: "asdf" },
+  ];
+
   return (
     <form className="w-full max-w-sm">
       <Input
@@ -43,9 +52,17 @@ const InventoryInput = () => {
           setPriceToSell(e.target.value);
         }}
       />
-      <Select label="Provider" />
+      <Select
+        label="Provider"
+        renderOptions={providerList.map((provider, index) => (
+          <option key={index}>{provider.providerName}</option>
+        ))}
+        onChange={(e) => {
+          setProvicer(e.target.value);
+        }}
+      />
       <div className="mt-4">
-        <Button text="Add" onClick={() => console.log("lol")} />
+        <Button text="Add" onClick={() => console.log(provider)} />
       </div>
     </form>
   );
