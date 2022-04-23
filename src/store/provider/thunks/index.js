@@ -33,25 +33,29 @@ export const deleteProvider =
   };
 
 export const updateProvider =
-  ({ providerId, update, index }) =>
+  ({ providerId, update, index }, callback) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`provider/${providerId}`, "patch", update);
       dispatch(
-        providerSlice.actions.updateProvider({ provider: res.date, index })
+        providerSlice.actions.updateProvider({ provider: res.data, index })
       );
+      callback();
     } catch (e) {
+      callback(e);
       throw e;
     }
   };
 
 export const createProvider =
-  ({ provider }) =>
+  ({ provider }, callback) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`provider`, "post", provider);
       dispatch(providerSlice.actions.createProvider({ provider: res.data }));
+      callback();
     } catch (e) {
+      callback(e);
       throw e;
     }
   };

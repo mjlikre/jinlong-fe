@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import * as userSlice from "../../store/users";
 
@@ -11,6 +12,7 @@ const SignUp = () => {
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const errorCheck = () => {
     if (!userName) return "Username field must not be empty";
@@ -22,12 +24,16 @@ const SignUp = () => {
     return null;
   };
 
+  const authenticate = (e) => {
+    !e && navigate("/main");
+  };
+
   const onSubmit = () => () => {
     const error = errorCheck();
     setError(error);
-
+    console.log("hehe");
     if (!error) {
-      dispatch(userSlice.thunks.signup({ userName, password }));
+      dispatch(userSlice.thunks.signup({ userName, password }, authenticate));
     }
   };
 
@@ -77,7 +83,7 @@ const SignUp = () => {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Button onClick={onSubmit} text="Sign Up" />
+              <Button onClick={onSubmit()} text="Sign Up" />
             </div>
           </form>
         </div>

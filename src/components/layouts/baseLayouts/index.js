@@ -14,7 +14,7 @@ const BaseLayouts = ({ children, className }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // !authentication && navigate("/signin");
+    !authentication && navigate("/signin");
   }, [authentication]);
 
   useEffect(() => {

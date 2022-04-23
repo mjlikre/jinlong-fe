@@ -3,6 +3,7 @@ import React from "react";
 import BaseLayout from "../layouts/baseLayouts";
 import InventoryInput from "./inventoryInput";
 import InventoryTable from "./inventoryTable";
+import UpdateInventory from "./updateInventory";
 
 const Inventory = () => {
   return (
@@ -13,6 +14,7 @@ const Inventory = () => {
           <InventoryTable />
         </div>
       </div>
+      <UpdateInventory />
     </BaseLayout>
   );
 };
