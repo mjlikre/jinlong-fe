@@ -7,7 +7,7 @@ import { userSelector } from "../../store/users/selectors";
 import Navbar from "../layouts/navbar/partialNavbar";
 import Button from "../layouts/buttons";
 
-const SignIn = () => {
+const SignUp = () => {
   const [userName, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
@@ -27,12 +27,7 @@ const SignIn = () => {
     setError(error);
 
     if (!error) {
-      dispatch(
-        userSlice.thunks.signin(
-          { userName, password },
-          console.log("heyheyhey")
-        )
-      );
+      dispatch(userSlice.thunks.signup({ userName, password }));
     }
   };
 
@@ -93,4 +88,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
