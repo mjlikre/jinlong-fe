@@ -1,13 +1,11 @@
-import axios from "axios";
+import { makeRequest } from "../../../lib/makeRequest";
 import cashflowSlice from "../slice";
 
 export const getCashflows =
   ({ callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.get("http://localhost:3001/cashflow", {
-        headers: { authorization: localStorage.getItem("token") },
-      });
+      const res = await makeRequest(`cashflow`, "get");
       dispatch(cashflowSlice.actions.setCashflows({ cashflows: res.data }));
       callback();
     } catch (e) {
@@ -19,10 +17,7 @@ export const getCashflow =
   ({ cashflowId, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.get(
-        `http://localhost:3001/cashflow/${cashflowId}`,
-        { headers: { authorization: localStorage.getItem("token") } }
-      );
+      const res = await makeRequest(`cashflow/${cashflowId}`, "get");
       dispatch(cashflowSlice.actions.setCashflow({ cashflow: res.data }));
       callback();
     } catch (e) {
@@ -34,9 +29,7 @@ export const deleteCashflow =
   ({ cashflowId, index, callback }) =>
   async (dispatch) => {
     try {
-      await axios.delete(`http://localhost:3001/cashflow/${cashflowId}`, {
-        headers: { authorization: localStorage.getItem("token") },
-      });
+      await makeRequest(`cashflow/${cashflowId}`, "delete");
       dispatch(cashflowSlice.actions.deleteCashflow({ index }));
       callback();
     } catch (e) {
@@ -48,11 +41,7 @@ export const updateCashflow =
   ({ cashflowId, update, index, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.patch(
-        `http://localhost:3001/cashflow/${cashflowId}`,
-        update,
-        { headers: { authorization: localStorage.getItem("token") } }
-      );
+      const res = await makeRequest(`cashflow/${cashflowId}`, "patch", update);
       dispatch(
         cashflowSlice.actions.updateCashflow({ cashflow: res.date, index })
       );
@@ -66,9 +55,7 @@ export const createCashflow =
   ({ cashflow, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:3001/cashflow`, cashflow, {
-        headers: { authorization: localStorage.getItem("token") },
-      });
+      const res = await makeRequest(`cashflow`, "post", cashflow);
       dispatch(cashflowSlice.actions.createCashflow({ cashflow: res.data }));
       callback();
     } catch (e) {

@@ -42,18 +42,22 @@ export const initialState = {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const reducers = combineReducers({
-  cashflowReducers,
-  inventoryReducers,
-  providerReducers,
-  clientReducers,
-  purchasesReducers,
-  salesReducers,
-  usersReducers,
-});
+let reducers = {};
+reducers["user"] = usersReducers;
+reducers["clients"] = clientReducers;
+reducers["cashflow"] = cashflowReducers;
+reducers["inventory"] = inventoryReducers;
+reducers["providers"] = providerReducers;
+reducers["purchase"] = purchasesReducers;
+reducers["sales"] = salesReducers;
 
+function wrapReducer(wrapped) {
+  return (state, action) => {
+    return wrapped(state, action);
+  };
+}
 export const store = createStore(
-  reducers,
+  wrapReducer(combineReducers(reducers)),
   initialState,
   composeEnhancers(applyMiddleware(reduxThunk))
 );

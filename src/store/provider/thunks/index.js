@@ -1,13 +1,11 @@
-import axios from "axios";
+import { makeRequest } from "../../../lib/makeRequest";
 import providerSlice from "../slice";
 
 export const getProviders =
   ({ callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.get("http://localhost:3001/providers", {
-        headers: { authorization: localStorage.getItem("token") },
-      });
+      const res = await makeRequest("providers", "get");
       dispatch(providerSlice.actions.setProviders({ providers: res.data }));
       callback();
     } catch (e) {
@@ -19,10 +17,7 @@ export const getProvider =
   ({ providerId, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.get(
-        `http://localhost:3001/providers/${providerId}`,
-        { headers: { authorization: localStorage.getItem("token") } }
-      );
+      const res = await makeRequest(`providers/${providerId}`, "get");
       dispatch(providerSlice.actions.setProvider({ provider: res.data }));
       callback();
     } catch (e) {
@@ -34,9 +29,7 @@ export const deleteProvider =
   ({ providerId, index, callback }) =>
   async (dispatch) => {
     try {
-      await axios.delete(`http://localhost:3001/providers/${providerId}`, {
-        headers: { authorization: localStorage.getItem("token") },
-      });
+      await makeRequest(`providers/${providerId}`, "delete");
       dispatch(providerSlice.actions.deleteProvider({ index }));
       callback();
     } catch (e) {
@@ -48,11 +41,7 @@ export const updateProvider =
   ({ providerId, update, index, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.patch(
-        `http://localhost:3001/providers/${providerId}`,
-        update,
-        { headers: { authorization: localStorage.getItem("token") } }
-      );
+      const res = await makeRequest(`providers/${providerId}`, "patch", update);
       dispatch(
         providerSlice.actions.updateProvider({ provider: res.date, index })
       );
@@ -66,11 +55,7 @@ export const createProvider =
   ({ provider, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.post(
-        `http://localhost:3001/providers`,
-        provider,
-        { headers: { authorization: localStorage.getItem("token") } }
-      );
+      const res = await makeRequest(`providers`, "post", provider);
       dispatch(providerSlice.actions.createProvider({ provider: res.data }));
       callback();
     } catch (e) {
