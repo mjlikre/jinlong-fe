@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as userSlice from "../../store/users";
+import { userSelector } from "../../store/users/selectors";
 
 import Navbar from "../layouts/navbar/partialNavbar";
 import Button from "../layouts/buttons";
@@ -27,13 +28,16 @@ const SignIn = () => {
 
     if (!error) {
       dispatch(
-        userSlice.thunks.signup(
+        userSlice.thunks.signin(
           { userName, password },
           console.log("heyheyhey")
         )
       );
     }
   };
+
+  const user = useSelector(userSelector);
+  console.log(user);
   return (
     <>
       <Navbar />

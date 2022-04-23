@@ -8,6 +8,9 @@ export const makeRequest = async (url, verb, data) => {
     data: data,
     headers: {
       authorization: localStorage.getItem("token"),
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE",
     },
   });
 };

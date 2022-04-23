@@ -1,10 +1,12 @@
 import * as R from "ramda";
 
 export const setUsers = (state, action) => {
-  const token = action.token;
-  return R.assocPath(["auth"], token, state);
+  const {
+    payload: { id },
+  } = action;
+  return R.assocPath(["user"], id, state);
 };
 
 export const removeUser = (state, action) => {
-  return R.assocPath(["auth"], null, state);
+  return R.assocPath(["user"], null, state);
 };
