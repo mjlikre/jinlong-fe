@@ -12,6 +12,11 @@ export const setProvider = (state, action) => {
   return R.assocPath(["provider"], provider, state);
 };
 
+export const setUpdate = (state, action) => {
+  const { provider } = action.payload;
+  return R.assocPath(["update"], provider, state);
+};
+
 export const deleteProvider = (state, action) => {
   const { index } = action.payload;
   const prev = R.pathOr([], providersPath, state);

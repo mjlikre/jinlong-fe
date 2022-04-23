@@ -1,24 +1,27 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { inventoriesSelector } from "../../store/inventory/selectors";
-import * as inventorySlice from "../../store/inventory";
+import { providersSelector } from "../../store/provider/selectors";
+import * as providerSlice from "../../store/provider";
 
 import Table from "../generics/table";
 
-const InventoryTable = () => {
-  const inventories = useSelector(inventoriesSelector) || [];
+const ProviderTable = () => {
+  const providers = useSelector(providersSelector) || [];
   const dispatch = useDispatch();
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
-        Product name
+        Provider
       </th>
       <th scope="col" className="px-6 py-3">
-        Quantity
+        Contact Name
       </th>
       <th scope="col" className="px-6 py-3">
-        Sell Price
+        Phone
+      </th>
+      <th scope="col" className="px-6 py-3">
+        Email
       </th>
       <th scope="col" className="px-6 py-3">
         <span>Edit</span>
@@ -26,10 +29,10 @@ const InventoryTable = () => {
     </tr>
   );
 
-  const setInventoryUpdate = (inventory) => () =>
-    dispatch(inventorySlice.actions.setUpdate({ inventory }));
+  const setProviderUpdate = (provider) => () =>
+    dispatch(providerSlice.actions.setUpdate({ provider }));
   const renderTBody = () =>
-    inventories.map((inventory, index) => (
+    providers.map((provider, index) => (
       <tr
         key={index}
         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -38,13 +41,16 @@ const InventoryTable = () => {
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
         >
-          {inventory.productName}
+          {provider.providerName}
         </th>
-        <td className="px-6 py-4">{inventory.quantity}</td>
-        <td className="px-6 py-4">{inventory.priceToSell}</td>
+        <td className="px-6 py-4">
+          {provider.contactFirstName} {provider.contactLastName}
+        </td>
+        <td className="px-6 py-4">{provider.contactPhone}</td>
+        <td className="px-6 py-4">{provider.contactEmail}</td>
         <td className="px-6 py-4">
           <div
-            onClick={setInventoryUpdate({ ...inventory, index })}
+            onClick={setProviderUpdate({ ...provider, index })}
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             Edit
@@ -55,4 +61,4 @@ const InventoryTable = () => {
   return <Table renderTHead={renderTHead} renderTBody={renderTBody} />;
 };
 
-export default InventoryTable;
+export default ProviderTable;

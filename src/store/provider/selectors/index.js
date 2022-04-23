@@ -9,3 +9,8 @@ export const providersSelector = createSelector(
   baseSelector,
   R.prop("providers")
 );
+
+export const updateProviderSelector = createSelector(
+  baseSelector,
+  R.prop("update")
+);

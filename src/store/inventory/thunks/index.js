@@ -33,7 +33,7 @@ export const deleteInventory =
   };
 
 export const updateInventory =
-  ({ inventoryId, update, index }) =>
+  ({ inventoryId, update, index }, callback) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(
@@ -42,20 +42,22 @@ export const updateInventory =
         update
       );
       dispatch(
-        inventorySlice.actions.updateInventory({ inventory: res.date, index })
+        inventorySlice.actions.updateInventory({ inventory: res.data, index })
       );
+      callback();
     } catch (e) {
+      callback(e);
       throw e;
     }
   };
 
-export const createInventory =
-  ({ inventory }) =>
-  async (dispatch) => {
-    try {
-      const res = await makeRequest(`inventory`, "post", inventory);
-      dispatch(inventorySlice.actions.createInventory({ inventory: res.data }));
-    } catch (e) {
-      throw e;
-    }
-  };
+export const createInventory = (inventory, callback) => async (dispatch) => {
+  try {
+    const res = await makeRequest(`inventory`, "post", inventory);
+    dispatch(inventorySlice.actions.createInventory({ inventory: res.data }));
+    callback();
+  } catch (e) {
+    callback(e);
+    throw e;
+  }
+};

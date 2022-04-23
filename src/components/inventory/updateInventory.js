@@ -8,12 +8,12 @@ import { inventoryUpdateSelector } from "../../store/inventory/selectors";
 
 import Input from "../generics/input";
 import Button from "../generics/buttons";
-import Select from "../generics/select";
 import Modal from "../generics/modal";
+import Select from "../generics/select";
 
-const InventoryInput = () => {
-  const providerList = useSelector(providersSelector) || [];
+const UpdateInventory = () => {
   const update = useSelector(inventoryUpdateSelector);
+  const providerList = useSelector(providersSelector) || [];
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,17 +23,26 @@ const InventoryInput = () => {
   const [priceToSell, setPriceToSell] = useState(0);
   const [provider, setProvider] = useState("");
 
-  useEffect(() => {}, [update]);
+  useEffect(() => {
+    if (update) {
+      setName(update.productName);
+      setPriceBought(update.priceBought);
+      setPriceToSell(update.priceToSell);
+      setQuantity(update.quantity);
+      setProvider(update.providerId);
+      setIsOpen(true);
+    }
+  }, [update]);
 
   const postSubmission = (e) => {
     if (!e) {
-      setName("");
-      setPriceBought("");
-      setPriceToSell("");
-      setQuantity("");
-      setProvider("");
-      setIsOpen(false);
+      onclose();
     }
+  };
+
+  const onclose = () => {
+    setIsOpen(false);
+    dispatch(inventorySlice.actions.setUpdate({ provider: false }));
   };
 
   const onSubmit = () => () => {
@@ -44,24 +53,17 @@ const InventoryInput = () => {
       quantity,
       providerId: provider,
     };
-    dispatch(inventorySlice.thunks.createInventory(inventory, postSubmission));
+    dispatch(
+      inventorySlice.thunks.updateInventory(
+        { inventoryId: update.id, update: inventory, index: update.index },
+        postSubmission
+      )
+    );
   };
 
   return (
     <>
-      <Button
-        text="Add Inventory"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      />
-      <Modal
-        isOpen={isOpen}
-        setIsOpen={() => {
-          setIsOpen(!isOpen);
-        }}
-        title="Add Inventory"
-      >
+      <Modal isOpen={isOpen} setIsOpen={onclose} title="Add Inventory">
         <form className="w-full max-w-sm">
           <Input
             label="Inventory Name"
@@ -107,7 +109,7 @@ const InventoryInput = () => {
             }}
           />
           <div className="mt-4">
-            <Button text="Add" onClick={onSubmit()} />
+            <Button text="Update" onClick={onSubmit()} />
           </div>
         </form>
       </Modal>
@@ -115,4 +117,4 @@ const InventoryInput = () => {
   );
 };
 
-export default InventoryInput;
+export default UpdateInventory;

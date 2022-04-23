@@ -1,7 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { XCircle } from "react-feather";
-import Button from "../buttons";
 
 export default function Modal({ isOpen, setIsOpen, title, children }) {
   return (

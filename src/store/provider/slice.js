@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import * as reducers from "./reducers";
 
-export const initialState = {};
+export const initialState = { update: false };
 
 const providersSlice = createSlice({
   name: "providers",
