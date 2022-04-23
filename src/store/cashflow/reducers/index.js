@@ -12,6 +12,11 @@ export const setCashflow = (state, action) => {
   return R.assocPath(["cashflow"], cashflow, state);
 };
 
+export const setUpdate = (state, action) => {
+  const { cashflow } = action.payload;
+  return R.assocPath(["update"], cashflow, state);
+};
+
 export const deleteCashflow = (state, action) => {
   const { index } = action.payload;
 

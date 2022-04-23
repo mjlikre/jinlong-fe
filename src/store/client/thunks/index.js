@@ -37,19 +37,19 @@ export const updateClient =
   async (dispatch) => {
     try {
       const res = await makeRequest(`client/${clientId}`, "patch", update);
-      dispatch(clientSlice.actions.updateClient({ client: res.date, index }));
+      dispatch(clientSlice.actions.updateClient({ client: res.data, index }));
     } catch (e) {
       throw e;
     }
   };
 
-export const createClient =
-  ({ client }) =>
-  async (dispatch) => {
-    try {
-      const res = await makeRequest(`client`, "post", client);
-      dispatch(clientSlice.actions.createClient({ client: res.data }));
-    } catch (e) {
-      throw e;
-    }
-  };
+export const createClient = (client, callback) => async (dispatch) => {
+  try {
+    const res = await makeRequest(`client`, "post", client);
+    dispatch(clientSlice.actions.createClient({ client: res.data }));
+    callback();
+  } catch (e) {
+    callback(e);
+    throw e;
+  }
+};
