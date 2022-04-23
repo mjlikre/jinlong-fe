@@ -8,3 +8,8 @@ export const inventoriesSelector = createSelector(
   baseSelector,
   R.prop("inventories")
 );
+
+export const inventoryUpdateSelector = createSelector(
+  baseSelector,
+  R.prop("update")
+);

@@ -1,12 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { inventoriesSelector } from "../../store/inventory/selectors";
+import * as inventorySlice from "../../store/inventory";
 
 import Table from "../generics/table";
 
 const InventoryTable = () => {
   const inventories = useSelector(inventoriesSelector) || [];
+  const dispatch = useDispatch();
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
@@ -24,6 +26,8 @@ const InventoryTable = () => {
     </tr>
   );
 
+  const setInventoryUpdate = (inventory) => () =>
+    dispatch(inventorySlice.actions.setUpdate({ inventory }));
   const renderTBody = () =>
     inventories.map((inventory, index) => (
       <tr
@@ -39,12 +43,12 @@ const InventoryTable = () => {
         <td className="px-6 py-4">{inventory.priceBought}</td>
         <td className="px-6 py-4">{inventory.priceToSell}</td>
         <td className="px-6 py-4">
-          <a
-            href="#"
+          <div
+            onClick={setInventoryUpdate(inventory)}
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             Edit
-          </a>
+          </div>
         </td>
       </tr>
     ));
