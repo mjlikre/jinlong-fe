@@ -1,13 +1,25 @@
 import React, { useEffect } from "react";
-import Navbar from "../navbar";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { fetchedSelector } from "../../../store/fetched/selectors";
+import * as fetchedSlice from "../../../store/fetched";
+
+import Navbar from "../navbar";
 
 const BaseLayouts = ({ children, className }) => {
   const navigate = useNavigate();
+  const authentication = localStorage.getItem("token");
+  const fetched = useSelector(fetchedSelector);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const authentication = localStorage.getItem("token");
     // !authentication && navigate("/signin");
-  });
+  }, [authentication]);
+
+  useEffect(() => {
+    !fetched && dispatch(fetchedSlice.thunks.fetched());
+  }, [fetched]);
   return (
     <>
       <Navbar />

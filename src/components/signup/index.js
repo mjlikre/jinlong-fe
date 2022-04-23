@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import * as userSlice from "../../store/users";
-import { userSelector } from "../../store/users/selectors";
 
 import Navbar from "../layouts/navbar/partialNavbar";
 import Button from "../generics/buttons";
@@ -32,8 +31,6 @@ const SignUp = () => {
     }
   };
 
-  const user = useSelector(userSelector);
-  console.log(user);
   return (
     <>
       <Navbar />
@@ -80,7 +77,7 @@ const SignUp = () => {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Button onClick={onSubmit}>Sign Up</Button>
+              <Button onClick={onSubmit} text="Sign Up" />
             </div>
           </form>
         </div>

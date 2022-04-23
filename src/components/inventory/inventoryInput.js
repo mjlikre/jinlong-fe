@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
+import { providersSelector } from "../../store/provider/selectors";
+
 import Input from "../generics/input";
 import Button from "../generics/buttons";
 import Select from "../generics/select";
@@ -9,14 +13,7 @@ const InventoryInput = () => {
   const [quantity, setQuantity] = useState(0);
   const [priceToSell, setPriceToSell] = useState(0);
   const [provider, setProvicer] = useState("");
-  const providerList = [
-    { providerFirstName: "Wade Cooper", providerName: "lol" },
-    { providerFirstName: "Wade Cooper", providerName: "lel" },
-    { providerFirstName: "Wade Cooper", providerName: "jil;" },
-    { providerFirstName: "Wade Cooper", providerName: "asdf" },
-    { providerFirstName: "Wade Cooper", providerName: "asdf" },
-    { providerFirstName: "Wade Cooper", providerName: "asdf" },
-  ];
+  const providerList = useSelector(providersSelector) || [];
 
   return (
     <form className="w-full max-w-sm">

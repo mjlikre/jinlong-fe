@@ -1,25 +1,23 @@
 import { makeRequest } from "../../../lib/makeRequest";
 import usersSlice from "../slice";
 
-export const signin = (signinInfo, callback) => async (dispatch) => {
+export const signin = (signinInfo) => async (dispatch) => {
   try {
     const res = await makeRequest("users/login", "post", signinInfo);
     localStorage.setItem("token", res.data.token);
     dispatch(usersSlice.actions.setUsers({ id: res.data.id }));
-    callback();
   } catch (e) {
-    callback(e);
+    throw e;
   }
 };
 
-export const signup = (signupInfo, callback) => async (getState, dispatch) => {
+export const signup = (signupInfo) => async (getState, dispatch) => {
   try {
     const res = await makeRequest("users", "post", signupInfo);
     localStorage.setItem("token", res.data.token);
     dispatch(usersSlice.actions.setUsers({ id: res.data.id }));
-    callback();
   } catch (e) {
-    callback(e);
+    throw e;
   }
 };
 

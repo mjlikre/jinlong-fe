@@ -1,20 +1,17 @@
 import { makeRequest } from "../../../lib/makeRequest";
 import clientSlice from "../slice";
 
-export const getClients =
-  ({ callback }) =>
-  async (dispatch) => {
-    try {
-      const res = await makeRequest(`client`, "get");
-      dispatch(clientSlice.actions.setClients({ clients: res.data }));
-      callback();
-    } catch (e) {
-      callback(e);
-    }
-  };
+export const getClients = () => async (dispatch) => {
+  try {
+    const res = await makeRequest(`client`, "get");
+    dispatch(clientSlice.actions.setClients({ clients: res.data }));
+  } catch (e) {
+    throw e;
+  }
+};
 
 export const getClient =
-  ({ clientId, callback }) =>
+  ({ clientId }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`client/${clientId}`, "get");
@@ -22,44 +19,40 @@ export const getClient =
       //   headers: { authorization: localStorage.getItem("token") },
       // });
       dispatch(clientSlice.actions.setClient({ client: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const deleteClient =
-  ({ clientId, index, callback }) =>
+  ({ clientId, index }) =>
   async (dispatch) => {
     try {
       await makeRequest(`inventory/${clientId}`, "delete");
       dispatch(clientSlice.actions.deleteClient({ index }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const updateClient =
-  ({ clientId, update, index, callback }) =>
+  ({ clientId, update, index }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`client/${clientId}`, "patch", update);
       dispatch(clientSlice.actions.updateClient({ client: res.date, index }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const createClient =
-  ({ client, callback }) =>
+  ({ client }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`client`, "post", client);
       dispatch(clientSlice.actions.createClient({ client: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
