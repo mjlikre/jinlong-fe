@@ -12,6 +12,11 @@ export const setPurchase = (state, action) => {
   return R.assocPath(["purchase"], purchase, state);
 };
 
+export const setUpdate = (state, action) => {
+  const { purchase } = action.payload;
+  return R.assocPath(["update"], purchase, state);
+};
+
 export const deletePurchase = (state, action) => {
   const { index } = action.payload;
   const prev = R.pathOr([], purchasesPath, state);
