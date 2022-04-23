@@ -1,13 +1,11 @@
-import axios from "axios";
 import inventorySlice from "../slice";
+import { makeRequest } from "../../../lib/makeRequest";
 
 export const getInventories =
   ({ callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.get("http://localhost:3001/inventory", {
-        headers: { authorization: localStorage.getItem("token") },
-      });
+      const res = await makeRequest(`inventory`, "get");
       dispatch(
         inventorySlice.actions.setInventories({ inventories: res.data })
       );
@@ -21,10 +19,7 @@ export const getInventory =
   ({ inventoryId, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.get(
-        `http://localhost:3001/inventory/${inventoryId}`,
-        { headers: { authorization: localStorage.getItem("token") } }
-      );
+      const res = await makeRequest(`inventory/${inventoryId}`, "get");
       dispatch(inventorySlice.actions.setInventory({ inventory: res.data }));
       callback();
     } catch (e) {
@@ -36,9 +31,7 @@ export const deleteInventory =
   ({ inventoryId, index, callback }) =>
   async (dispatch) => {
     try {
-      await axios.delete(`http://localhost:3001/inventory/${inventoryId}`, {
-        headers: { authorization: localStorage.getItem("token") },
-      });
+      await makeRequest(`inventory/${inventoryId}`, "delete");
       dispatch(inventorySlice.actions.deleteInventory({ index }));
       callback();
     } catch (e) {
@@ -50,10 +43,10 @@ export const updateInventory =
   ({ inventoryId, update, index, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.patch(
-        `http://localhost:3001/inventory/${inventoryId}`,
-        update,
-        { headers: { authorization: localStorage.getItem("token") } }
+      const res = await makeRequest(
+        `inventory/${inventoryId}`,
+        "patch",
+        update
       );
       dispatch(
         inventorySlice.actions.updateInventory({ inventory: res.date, index })
@@ -68,11 +61,7 @@ export const createInventory =
   ({ inventory, callback }) =>
   async (dispatch) => {
     try {
-      const res = await axios.post(
-        `http://localhost:3001/inventory`,
-        inventory,
-        { headers: { authorization: localStorage.getItem("token") } }
-      );
+      const res = await makeRequest(`inventory`, "post", inventory);
       dispatch(inventorySlice.actions.createInventory({ inventory: res.data }));
       callback();
     } catch (e) {
