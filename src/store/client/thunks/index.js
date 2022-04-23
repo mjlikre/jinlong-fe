@@ -15,9 +15,6 @@ export const getClient =
   async (dispatch) => {
     try {
       const res = await makeRequest(`client/${clientId}`, "get");
-      // const res = await axios.get(`http://localhost:3001/client/${clientId}`, {
-      //   headers: { authorization: localStorage.getItem("token") },
-      // });
       dispatch(clientSlice.actions.setClient({ client: res.data }));
     } catch (e) {
       throw e;
