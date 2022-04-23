@@ -1,64 +1,57 @@
 import { makeRequest } from "../../../lib/makeRequest";
 import providerSlice from "../slice";
 
-export const getProviders =
-  ({ callback }) =>
-  async (dispatch) => {
-    try {
-      const res = await makeRequest("providers", "get");
-      dispatch(providerSlice.actions.setProviders({ providers: res.data }));
-      callback();
-    } catch (e) {
-      callback(e);
-    }
-  };
+export const getProviders = () => async (dispatch) => {
+  try {
+    const res = await makeRequest("provider", "get");
+    dispatch(providerSlice.actions.setProviders({ providers: res.data }));
+  } catch (e) {
+    throw e;
+  }
+};
 
 export const getProvider =
-  ({ providerId, callback }) =>
+  ({ providerId }) =>
   async (dispatch) => {
     try {
-      const res = await makeRequest(`providers/${providerId}`, "get");
+      const res = await makeRequest(`provider/${providerId}`, "get");
       dispatch(providerSlice.actions.setProvider({ provider: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const deleteProvider =
-  ({ providerId, index, callback }) =>
+  ({ providerId, index }) =>
   async (dispatch) => {
     try {
-      await makeRequest(`providers/${providerId}`, "delete");
+      await makeRequest(`provider/${providerId}`, "delete");
       dispatch(providerSlice.actions.deleteProvider({ index }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const updateProvider =
-  ({ providerId, update, index, callback }) =>
+  ({ providerId, update, index }) =>
   async (dispatch) => {
     try {
-      const res = await makeRequest(`providers/${providerId}`, "patch", update);
+      const res = await makeRequest(`provider/${providerId}`, "patch", update);
       dispatch(
         providerSlice.actions.updateProvider({ provider: res.date, index })
       );
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const createProvider =
-  ({ provider, callback }) =>
+  ({ provider }) =>
   async (dispatch) => {
     try {
-      const res = await makeRequest(`providers`, "post", provider);
+      const res = await makeRequest(`provider`, "post", provider);
       dispatch(providerSlice.actions.createProvider({ provider: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };

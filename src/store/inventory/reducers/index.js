@@ -12,6 +12,11 @@ export const setInventory = (state, action) => {
   return R.assocPath(["inventory"], inventory, state);
 };
 
+export const setUpdate = (state, action) => {
+  const { inventory } = action.payload;
+  return R.assocPath(["update"], inventory, state);
+};
+
 export const deleteInventory = (state, action) => {
   const { index } = action.payload;
   const prev = R.pathOr([], inventoriesPath, state);

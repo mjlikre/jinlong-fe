@@ -29,27 +29,33 @@ import {
   initialState as salesInitialState,
   reducer as salesReducers,
 } from "./sales";
+import {
+  initialState as fetchedInitialState,
+  reducer as fetchedReducer,
+} from "./fetched";
 
 export const initialState = {
   users: usersInitialState,
-  client: clientInitialState,
+  clients: clientInitialState,
   cashflow: cashflowInitialState,
   inventory: inventoryInitialState,
   sales: salesInitialState,
-  purchases: purchasesInitialState,
-  provider: providerInitialState,
+  purchase: purchasesInitialState,
+  providers: providerInitialState,
+  fetched: fetchedInitialState,
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 let reducers = {};
-reducers["user"] = usersReducers;
+reducers["users"] = usersReducers;
 reducers["clients"] = clientReducers;
 reducers["cashflow"] = cashflowReducers;
 reducers["inventory"] = inventoryReducers;
 reducers["providers"] = providerReducers;
 reducers["purchase"] = purchasesReducers;
 reducers["sales"] = salesReducers;
+reducers["fetched"] = fetchedReducer;
 
 function wrapReducer(wrapped) {
   return (state, action) => {

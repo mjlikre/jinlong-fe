@@ -1,64 +1,57 @@
 import { makeRequest } from "../../../lib/makeRequest";
 import purchasesSlice from "../slice";
 
-export const getPurchases =
-  ({ callback }) =>
-  async (dispatch) => {
-    try {
-      const res = await makeRequest(`purchases`, "get");
-      dispatch(purchasesSlice.actions.setPurchases({ purchases: res.data }));
-      callback();
-    } catch (e) {
-      callback(e);
-    }
-  };
+export const getPurchases = () => async (dispatch) => {
+  try {
+    const res = await makeRequest(`purchases`, "get");
+    dispatch(purchasesSlice.actions.setPurchases({ purchases: res.data }));
+  } catch (e) {
+    throw e;
+  }
+};
 
 export const getPurchase =
-  ({ purchaseId, callback }) =>
+  ({ purchaseId }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`purchases/${purchaseId}`, "get");
       dispatch(purchasesSlice.actions.setPurchase({ purchase: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const deletePurchase =
-  ({ purchaseId, index, callback }) =>
+  ({ purchaseId, index }) =>
   async (dispatch) => {
     try {
       await makeRequest(`purchases/${purchaseId}`, "delete");
       dispatch(purchasesSlice.actions.deletePurchase({ index }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const updatePurchase =
-  ({ purchaseId, update, index, callback }) =>
+  ({ purchaseId, update, index }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`purchases/${purchaseId}`, "patch", update);
       dispatch(
         purchasesSlice.actions.updatePurchase({ purchase: res.date, index })
       );
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const createPurchase =
-  ({ purchase, callback }) =>
+  ({ purchase }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`purchases`, "post", purchase);
       dispatch(purchasesSlice.actions.createpurchases({ purchase: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };

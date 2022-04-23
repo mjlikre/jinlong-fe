@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import * as reducers from "./reducers";
 
 export const initialState = {
-  update: false,
+  fetched: false,
 };
 
-const inventorySlice = createSlice({
-  name: "inventory",
+const fetchedSlice = createSlice({
+  name: "fetched",
   initialState,
   reducers,
 });
 
-export default inventorySlice;
+export default fetchedSlice;

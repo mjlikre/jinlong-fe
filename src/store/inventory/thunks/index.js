@@ -1,46 +1,39 @@
 import inventorySlice from "../slice";
 import { makeRequest } from "../../../lib/makeRequest";
 
-export const getInventories =
-  ({ callback }) =>
-  async (dispatch) => {
-    try {
-      const res = await makeRequest(`inventory`, "get");
-      dispatch(
-        inventorySlice.actions.setInventories({ inventories: res.data })
-      );
-      callback();
-    } catch (e) {
-      callback(e);
-    }
-  };
+export const getInventories = () => async (dispatch) => {
+  try {
+    const res = await makeRequest(`inventory`, "get");
+    dispatch(inventorySlice.actions.setInventories({ inventories: res.data }));
+  } catch (e) {
+    throw e;
+  }
+};
 
 export const getInventory =
-  ({ inventoryId, callback }) =>
+  ({ inventoryId }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`inventory/${inventoryId}`, "get");
       dispatch(inventorySlice.actions.setInventory({ inventory: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const deleteInventory =
-  ({ inventoryId, index, callback }) =>
+  ({ inventoryId, index }) =>
   async (dispatch) => {
     try {
       await makeRequest(`inventory/${inventoryId}`, "delete");
       dispatch(inventorySlice.actions.deleteInventory({ index }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const updateInventory =
-  ({ inventoryId, update, index, callback }) =>
+  ({ inventoryId, update, index }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(
@@ -51,20 +44,18 @@ export const updateInventory =
       dispatch(
         inventorySlice.actions.updateInventory({ inventory: res.date, index })
       );
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
 
 export const createInventory =
-  ({ inventory, callback }) =>
+  ({ inventory }) =>
   async (dispatch) => {
     try {
       const res = await makeRequest(`inventory`, "post", inventory);
       dispatch(inventorySlice.actions.createInventory({ inventory: res.data }));
-      callback();
     } catch (e) {
-      callback(e);
+      throw e;
     }
   };
