@@ -50,7 +50,7 @@ const InventoryInput = () => {
   return (
     <>
       <Button
-        text="Add Inventory"
+        text="Add New Inventory"
         onClick={() => {
           setIsOpen(true);
         }}

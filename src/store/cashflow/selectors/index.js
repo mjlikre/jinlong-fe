@@ -7,10 +7,10 @@ export const baseSelector = R.pathOr({}, basePath);
 
 export const cashflowSelector = createSelector(
   baseSelector,
-  R.prop("cashflows")
+  R.propOr([], "cashflows")
 );
 
 export const updateCashflowSelector = createSelector(
   baseSelector,
-  R.prop("update")
+  R.propOr(false, "update")
 );

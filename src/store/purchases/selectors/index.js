@@ -7,10 +7,21 @@ export const baseSelector = R.pathOr({}, basePath);
 
 export const purchasesSelector = createSelector(
   baseSelector,
-  R.prop("purchases")
+  R.propOr([], "purchases")
+);
+
+export const purchaseIdSelector = createSelector(
+  baseSelector,
+  R.propOr("", "purchase")
+);
+
+export const purchaseSelector = createSelector(
+  purchasesSelector,
+  purchaseIdSelector,
+  (purchases, purchaseId) => R.find(R.propEq("id", purchaseId), purchases)
 );
 
 export const updatePurchaseSelector = createSelector(
   baseSelector,
-  R.prop("update")
+  R.propOr(false, "update")
 );

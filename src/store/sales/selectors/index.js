@@ -5,9 +5,12 @@ const basePath = ["sales"];
 
 export const baseSelector = R.pathOr({}, basePath);
 
-export const salesSelector = createSelector(baseSelector, R.prop("sales"));
+export const salesSelector = createSelector(
+  baseSelector,
+  R.propOr([], "sales")
+);
 
 export const updateSalesSelector = createSelector(
   baseSelector,
-  R.prop("update")
+  R.propOr(false, "update")
 );

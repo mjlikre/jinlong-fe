@@ -6,10 +6,20 @@ export const baseSelector = R.pathOr({}, basePath);
 
 export const inventoriesSelector = createSelector(
   baseSelector,
-  R.prop("inventories")
+  R.propOr([], "inventories")
 );
 
 export const inventoryUpdateSelector = createSelector(
   baseSelector,
-  R.prop("update")
+  R.propOr(false, "update")
+);
+
+export const inventoriesToUpdateSelector = createSelector(
+  baseSelector,
+  R.propOr([], "inventoriesToUpdate")
+);
+
+export const inventoriesAddedSelector = createSelector(
+  baseSelector,
+  R.propOr([], "inventoriesAdded")
 );
