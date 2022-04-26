@@ -51,6 +51,12 @@ export const updateAddedInventory = (state, action) => {
   return R.assocPath(["inventoriesToUpdate"], newInventoriesToUpdate, state);
 };
 
+export const deleteInventoryToUpdate = (state, action) => {
+  const { index } = action.payload;
+  const prev = R.pathOr([], ["inventoriesToUpdate"], state);
+  return R.assocPath(["inventoriesToUpdate"], R.remove(index, 1, prev), state);
+};
+
 export const updateInventory = (state, action) => {
   const { inventory, index } = action.payload;
   const newInventories = R.insert(

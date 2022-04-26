@@ -22,13 +22,20 @@ const PurchaseContent = ({ inventories = [] }) => {
         Buy Price
       </th>
       <th scope="col" className="px-6 py-3">
-        <span>Edit</span>
+        Edit
+      </th>
+      <th scope="col" className="px-6 py-3">
+        Remove
       </th>
     </tr>
   );
 
   const setInventoryUpdate = (inventory) => () => {
     return dispatch(inventorySlice.actions.setUpdate({ inventory }));
+  };
+
+  const deleteInventoryToUpdate = (index) => () => {
+    return dispatch(inventorySlice.actions.deleteInventoryToUpdate({ index }));
   };
   const renderTBody = () =>
     inventories.map((inventory, index) => (
@@ -51,6 +58,14 @@ const PurchaseContent = ({ inventories = [] }) => {
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             Edit
+          </div>
+        </td>
+        <td className="px-6 py-4">
+          <div
+            onClick={deleteInventoryToUpdate(index)}
+            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          >
+            Remove
           </div>
         </td>
       </tr>
