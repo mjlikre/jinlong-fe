@@ -3,9 +3,9 @@ import * as R from "ramda";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import * as inventorySlice from "../../../store/inventory";
+import * as purchasesSlice from "../../../store/purchases";
 
-import { inventoryUpdateSelector } from "../../../store/inventory/selectors";
+import { purchaseItemUpdateSelector } from "../../../store/purchases/selectors";
 import { inventoriesSelector } from "../../../store/inventory/selectors";
 
 import Input from "../../generics/input";
@@ -15,7 +15,7 @@ import Modal from "../../generics/modal";
 
 const AddInventory = ({ providerId }) => {
   const inventories = useSelector(inventoriesSelector);
-  const update = useSelector(inventoryUpdateSelector);
+  const update = useSelector(purchaseItemUpdateSelector);
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +53,7 @@ const AddInventory = ({ providerId }) => {
     setPriceToSell("");
     setQuantity(0);
     setInventoryIndex("");
-    dispatch(inventorySlice.actions.setUpdate({ inventory: false }));
+    dispatch(purchasesSlice.actions.setUpdate({ inventory: false }));
   };
 
   const onUpdate = () => {
@@ -65,9 +65,8 @@ const AddInventory = ({ providerId }) => {
       prevQuantity: update.update.prevQuantity,
     };
 
-    console.log(update);
     dispatch(
-      inventorySlice.thunks.updateAddedInventory(
+      purchasesSlice.thunks.updateAddedInventory(
         {
           inventoryId: update.inventoryId,
           update: inventory,
@@ -88,7 +87,7 @@ const AddInventory = ({ providerId }) => {
       prevQuantity: R.propOr(0, "quantity", inventoriesList[inventoryIndex]),
     };
     dispatch(
-      inventorySlice.thunks.inventoriesToUpdate(
+      purchasesSlice.thunks.inventoriesToUpdate(
         {
           inventoryId: R.propOr("", "id", inventoriesList[inventoryIndex]),
           update: inventory,

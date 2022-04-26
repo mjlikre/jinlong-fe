@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import * as R from "ramda";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { purchaseSelector } from "../../../store/purchases/selectors";
+import { purchaseEdit } from "../../../store/purchases/selectors";
 import { providersSelector } from "../../../store/provider/selectors";
-import { inventoriesToUpdateSelector } from "../../../store/inventory/selectors";
 
 import * as purchasesSlice from "../../../store/purchases";
 
@@ -14,25 +15,26 @@ import ProviderInput from "../../providers/providerInput";
 import AddInventory from "./addInventory";
 import InventoryInput from "../../inventory/inventoryInput";
 import PurchaseContent from "./purchaseContent";
+import Button from "../../generics/buttons";
+import Input from "../../generics/input";
 
 const Purchase = () => {
   const { purchaseId } = useParams();
   const dispatch = useDispatch();
   const providerList = useSelector(providersSelector);
-  const purchase = useSelector(purchaseSelector);
-  const inventories = useSelector(inventoriesToUpdateSelector);
-
-  const [providerId, setProviderId] = useState(null);
+  const purchase = useSelector(purchaseEdit);
 
   useEffect(() => {
     if (purchaseId !== "new") {
-      dispatch(
-        purchasesSlice.actions.setPurchase({
-          purchase: purchaseId,
-        })
-      );
+      dispatch(purchasesSlice.thunks.setPurchase(purchaseId));
+    } else {
+      dispatch(purchasesSlice.actions.setPurchaseEdit({ purchaseState: true }));
     }
   }, [purchaseId]);
+
+  const setProviderId = (providerId) => {
+    dispatch(purchasesSlice.actions.setPurchaseEditProviderId({ providerId }));
+  };
 
   return (
     <>
@@ -54,15 +56,30 @@ const Purchase = () => {
           <ProviderInput />
         </div>
       </div>
-      {providerId && (
+      {purchase.providerId && (
         <div className="flex w-full justify-around">
-          <AddInventory providerId={providerId} />
+          <AddInventory providerId={purchase.providerId} />
           <InventoryInput />
         </div>
       )}
 
       <div className="w-full pt-5">
-        <PurchaseContent inventories={inventories} />
+        <PurchaseContent inventories={purchase.itemsPurchased} />
+      </div>
+      <div className="w-full pt-5 flex justify-around">
+        <div className="w-8/12">
+          <Input
+            label="Total Amount: "
+            value={purchase.amount}
+            type="number"
+            onChange={(e) => {
+              console.log(e.target.value);
+            }}
+          />
+        </div>
+        <div className="w-3-12">
+          <Button text="Submit" />
+        </div>
       </div>
     </>
   );

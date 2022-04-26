@@ -9,12 +9,12 @@ export const setPurchases = (state, action) => {
 
 export const setPurchase = (state, action) => {
   const { purchase } = action.payload;
-  return R.assocPath(["purchase"], purchase, state);
+  return R.assocPath(["edit"], purchase, state);
 };
 
 export const setUpdate = (state, action) => {
-  const { purchase } = action.payload;
-  return R.assocPath(["update"], purchase, state);
+  const { inventory } = action.payload;
+  return R.assocPath(["update"], inventory, state);
 };
 
 export const deletePurchase = (state, action) => {
@@ -40,4 +40,41 @@ export const updatePurchase = (state, action) => {
     ),
     state
   );
+};
+
+export const setPurchaseEdit = (state, action) => {
+  const { purchaseState } = action.payload;
+  const path = ["edit", "open"];
+  return R.assocPath(path, purchaseState, state);
+};
+
+export const deleteItemFromList = (state, action) => {
+  const { index } = action.payload;
+  const path = ["edit", "itemsPurchased"];
+  const prev = R.pathOr([], path, state);
+  return R.assocPath(path, R.remove(index, 1, prev), state);
+};
+
+export const inventoriesToUpdate = (state, action) => {
+  const { inventory } = action.payload;
+  const path = ["edit", "itemsPurchased"];
+  const prev = R.pathOr([], path, state);
+  return R.assocPath(path, R.append(inventory, prev), state);
+};
+
+export const updateAddedInventory = (state, action) => {
+  const { inventory, itemIndex } = action.payload;
+  const path = ["edit", "itemsPurchased"];
+  const newInventoriesToUpdate = R.insert(
+    itemIndex,
+    inventory,
+    R.remove(itemIndex, 1, R.pathOr([], path))
+  );
+  return R.assocPath(path, newInventoriesToUpdate, state);
+};
+
+export const setPurchaseEditProviderId = (state, action) => {
+  const { providerId } = action.payload;
+  const path = ["edit", "providerId"];
+  return R.assocPath(path, providerId, state);
 };

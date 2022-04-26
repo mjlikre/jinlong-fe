@@ -21,7 +21,12 @@ export const purchaseSelector = createSelector(
   (purchases, purchaseId) => R.find(R.propEq("id", purchaseId), purchases)
 );
 
-export const updatePurchaseSelector = createSelector(
+export const purchaseEdit = createSelector(
+  baseSelector,
+  R.propOr(false, "edit")
+);
+
+export const purchaseItemUpdateSelector = createSelector(
   baseSelector,
   R.propOr(false, "update")
 );
