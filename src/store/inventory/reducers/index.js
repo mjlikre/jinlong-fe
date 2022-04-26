@@ -30,9 +30,8 @@ export const createInventory = (state, action) => {
 };
 
 export const inventoriesToUpdate = (state, action) => {
-  const { inventory, callback } = action.payload;
+  const { inventory } = action.payload;
   const prev = R.pathOr([], ["inventoriesToUpdate"], state);
-  callback();
   return R.assocPath(["inventoriesToUpdate"], R.append(inventory, prev), state);
 };
 
@@ -40,6 +39,16 @@ export const inventoriesAdded = (state, action) => {
   const { inventoryId } = action.payload;
   const prev = R.pathOr([], ["inventoriesAdded"], state);
   return R.assocPath(["inventoriesAdded"], R.append(inventoryId, prev), state);
+};
+
+export const updateAddedInventory = (state, action) => {
+  const { inventory, itemIndex } = action.payload;
+  const newInventoriesToUpdate = R.insert(
+    itemIndex,
+    inventory,
+    R.remove(itemIndex, 1, R.pathOr([], ["inventoriesToUpdate"]))
+  );
+  return R.assocPath(["inventoriesToUpdate"], newInventoriesToUpdate, state);
 };
 
 export const updateInventory = (state, action) => {

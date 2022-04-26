@@ -14,6 +14,11 @@ export const inventoryUpdateSelector = createSelector(
   R.propOr(false, "update")
 );
 
+export const inventoryUpdateAddedSelector = createSelector(
+  baseSelector,
+  R.propOr(false, "updateAdded")
+);
+
 export const inventoriesToUpdateSelector = createSelector(
   baseSelector,
   R.propOr([], "inventoriesToUpdate")

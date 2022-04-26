@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState, useMemo } from "react";
 import * as R from "ramda";
+
+import { useDispatch, useSelector } from "react-redux";
+
 import * as inventorySlice from "../../../store/inventory";
 
-import { providersSelector } from "../../../store/provider/selectors";
 import { inventoryUpdateSelector } from "../../../store/inventory/selectors";
 import { inventoriesSelector } from "../../../store/inventory/selectors";
 
@@ -12,8 +13,8 @@ import Button from "../../generics/buttons";
 import Select from "../../generics/select";
 import Modal from "../../generics/modal";
 
-const AddInventory = () => {
-  const inventoriesList = useSelector(inventoriesSelector) || [];
+const AddInventory = ({ providerId }) => {
+  const inventories = useSelector(inventoriesSelector);
   const update = useSelector(inventoryUpdateSelector);
   const dispatch = useDispatch();
 
@@ -24,17 +25,23 @@ const AddInventory = () => {
   const [priceToSell, setPriceToSell] = useState(0);
   const [inventoryIndex, setInventoryIndex] = useState("");
 
+  const inventoriesList = useMemo(
+    () => R.filter(R.propEq("providerId", providerId), inventories),
+    [providerId]
+  );
+
   useEffect(() => {
     if (update) {
       setIsOpen(true);
       setInventoryIndex(update.index);
       setPriceBought(R.propOr(0, "priceBought", update.update));
+      setQuantity(R.propOr(0, "quantity", update.update));
       setPriceToSell(R.propOr(0, "priceToSell", update.update));
-      setProductName(R.propOr(0, "productName", update.update));
+      setProductName(R.propOr("", "productName", update.update));
     }
   }, [update]);
 
-  const postSubmission = (e) => {
+  const callback = (e) => {
     if (!e) {
       onclose();
     }
@@ -49,25 +56,46 @@ const AddInventory = () => {
     dispatch(inventorySlice.actions.setUpdate({ inventory: false }));
   };
 
-  const onSubmit = () => () => {
+  const onUpdate = () => {
     const inventory = {
       priceBought,
       priceToSell,
       productName,
-      quantity:
-        parseInt(quantity) +
-        R.propOr(0, "quantity", inventoriesList[inventoryIndex]),
-      currentQuant: quantity,
+      quantity: parseInt(quantity),
+      prevQuantity: update.update.prevQuantity,
+    };
+
+    console.log(update);
+    dispatch(
+      inventorySlice.thunks.updateAddedInventory(
+        {
+          inventoryId: update.inventoryId,
+          update: inventory,
+          index: update.index,
+        },
+        update.itemIndex,
+        callback
+      )
+    );
+  };
+
+  const onSubmit = () => {
+    const inventory = {
+      priceBought,
+      priceToSell,
+      productName,
+      quantity: parseInt(quantity),
+      prevQuantity: R.propOr(0, "quantity", inventoriesList[inventoryIndex]),
     };
     dispatch(
-      inventorySlice.actions.inventoriesToUpdate({
-        inventory: {
+      inventorySlice.thunks.inventoriesToUpdate(
+        {
           inventoryId: R.propOr("", "id", inventoriesList[inventoryIndex]),
           update: inventory,
           index: inventoryIndex,
         },
-        callback: postSubmission,
-      })
+        callback
+      )
     );
   };
 
@@ -137,7 +165,11 @@ const AddInventory = () => {
           />
 
           <div className="mt-4">
-            <Button text="Add" onClick={onSubmit()} />
+            {!update ? (
+              <Button text="Add" onClick={onSubmit} />
+            ) : (
+              <Button text="update" onClick={onUpdate} />
+            )}
           </div>
         </form>
       </Modal>

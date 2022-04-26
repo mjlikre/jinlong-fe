@@ -1,13 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { inventoriesToUpdateSelector } from "../../../store/inventory/selectors";
 import * as inventorySlice from "../../../store/inventory";
 
 import Table from "../../generics/table";
 
-const PurchaseContent = () => {
-  const inventories = useSelector(inventoriesToUpdateSelector);
+const PurchaseContent = ({ inventories = [] }) => {
   const dispatch = useDispatch();
   const renderTHead = () => (
     <tr>
@@ -29,8 +27,9 @@ const PurchaseContent = () => {
     </tr>
   );
 
-  const setInventoryUpdate = (inventory) => () =>
-    dispatch(inventorySlice.actions.setUpdate({ inventory }));
+  const setInventoryUpdate = (inventory) => () => {
+    return dispatch(inventorySlice.actions.setUpdate({ inventory }));
+  };
   const renderTBody = () =>
     inventories.map((inventory, index) => (
       <tr
@@ -43,12 +42,12 @@ const PurchaseContent = () => {
         >
           {inventory.update.productName}
         </th>
-        <td className="px-6 py-4">{inventory.update.currentQuant}</td>
+        <td className="px-6 py-4">{inventory.update.quantity}</td>
         <td className="px-6 py-4">{inventory.update.priceToSell}</td>
         <td className="px-6 py-4">{inventory.update.priceBought}</td>
         <td className="px-6 py-4">
           <div
-            onClick={setInventoryUpdate({ ...inventory, index })}
+            onClick={setInventoryUpdate({ ...inventory, itemIndex: index })}
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             Edit

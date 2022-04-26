@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import * as R from "ramda";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { purchaseSelector } from "../../../store/purchases/selectors";
 import { providersSelector } from "../../../store/provider/selectors";
-import { inventoriesSelector } from "../../../store/inventory/selectors";
+import { inventoriesToUpdateSelector } from "../../../store/inventory/selectors";
 
 import * as purchasesSlice from "../../../store/purchases";
 
 import Select from "../../generics/select";
 import ProviderInput from "../../providers/providerInput";
-import InventoryTable from "../../inventory/inventoryTable";
 import AddInventory from "./addInventory";
 import InventoryInput from "../../inventory/inventoryInput";
 import PurchaseContent from "./purchaseContent";
@@ -20,8 +20,9 @@ const Purchase = () => {
   const dispatch = useDispatch();
   const providerList = useSelector(providersSelector);
   const purchase = useSelector(purchaseSelector);
+  const inventories = useSelector(inventoriesToUpdateSelector);
 
-  const [providerId, setProviderId] = useState("");
+  const [providerId, setProviderId] = useState(null);
 
   useEffect(() => {
     if (purchaseId !== "new") {
@@ -53,12 +54,15 @@ const Purchase = () => {
           <ProviderInput />
         </div>
       </div>
-      <div className="flex w-full justify-around">
-        <AddInventory />
-        <InventoryInput />
-      </div>
+      {providerId && (
+        <div className="flex w-full justify-around">
+          <AddInventory providerId={providerId} />
+          <InventoryInput />
+        </div>
+      )}
+
       <div className="w-full pt-5">
-        <PurchaseContent />
+        <PurchaseContent inventories={inventories} />
       </div>
     </>
   );
