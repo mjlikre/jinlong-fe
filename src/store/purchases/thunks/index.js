@@ -98,22 +98,53 @@ export const inventoriesToUpdate =
             inventoriesToUpdate[itemIndex].update.quantity,
         },
       };
+
+      const amount = inventory.update.quantity * inventory.update.priceBought;
+
       dispatch(
         purchasesSlice.actions.updateAddedInventory({
           inventory: update,
           itemIndex,
         })
       );
+      dispatch(purchasesSlice.actions.updatePurchaseEditAmount({ amount }));
       return callback();
     }
+
+    const amount = inventory.update.quantity * inventory.update.priceBought;
     dispatch(purchasesSlice.actions.inventoriesToUpdate({ inventory }));
+    dispatch(purchasesSlice.actions.updatePurchaseEditAmount({ amount }));
     callback();
   };
 
 export const updateAddedInventory =
-  (inventory, itemIndex, callback) => async (dispatch) => {
+  (inventory, itemIndex, callback) => async (dispatch, getState) => {
+    const {
+      purchase: {
+        edit: { itemsPurchased },
+      },
+    } = getState();
+    const prev = itemsPurchased[itemIndex];
+    const currentAmount =
+      inventory.update.quantity * inventory.update.priceBought;
+    const prevAmount = prev.update.quantity * prev.update.priceBought;
+    const amount = -prevAmount + currentAmount;
     dispatch(
       purchasesSlice.actions.updateAddedInventory({ inventory, itemIndex })
     );
+    dispatch(purchasesSlice.actions.updatePurchaseEditAmount({ amount }));
+
     callback();
+  };
+
+export const deleteItemFromList =
+  ({ update, itemIndex }) =>
+  async (dispatch) => {
+    const { quantity, priceBought } = update;
+    const amount =
+      Math.round((quantity * priceBought + Number.EPSILON) * 100) / 100;
+    dispatch(purchasesSlice.actions.deleteItemFromList({ index: itemIndex }));
+    dispatch(
+      purchasesSlice.actions.updatePurchaseEditAmount({ amount: -amount })
+    );
   };

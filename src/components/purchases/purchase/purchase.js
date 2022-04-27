@@ -64,6 +64,8 @@ const Purchase = () => {
       )}
 
       <div className="w-full pt-5">
+        <p className="font-light">Items purchased</p>
+
         <PurchaseContent inventories={purchase.itemsPurchased} />
       </div>
       <div className="w-full pt-5 flex justify-around">

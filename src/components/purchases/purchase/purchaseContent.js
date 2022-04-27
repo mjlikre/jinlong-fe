@@ -36,8 +36,8 @@ const PurchaseContent = ({ inventories = [] }) => {
     return dispatch(purchaseSlice.actions.setUpdate({ inventory }));
   };
 
-  const deleteInventoryToUpdate = (index) => () => {
-    return dispatch(purchaseSlice.actions.deleteItemFromList({ index }));
+  const deleteInventoryToUpdate = (inventory) => () => {
+    return dispatch(purchaseSlice.thunks.deleteItemFromList(inventory));
   };
   const renderTBody = () =>
     inventories.map((inventory, index) => (
@@ -68,7 +68,10 @@ const PurchaseContent = ({ inventories = [] }) => {
         </td>
         <td className="px-6 py-4">
           <div
-            onClick={deleteInventoryToUpdate(index)}
+            onClick={deleteInventoryToUpdate({
+              ...inventory,
+              itemIndex: index,
+            })}
             className="font-medium text-red-50 dark:text-red-400 hover:text-red-100 flex justify-center"
           >
             <MinusCircle className="w-6 h-6" />

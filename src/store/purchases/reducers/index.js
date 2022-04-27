@@ -68,7 +68,7 @@ export const updateAddedInventory = (state, action) => {
   const newInventoriesToUpdate = R.insert(
     itemIndex,
     inventory,
-    R.remove(itemIndex, 1, R.pathOr([], path))
+    R.remove(itemIndex, 1, R.pathOr([], path, state))
   );
   return R.assocPath(path, newInventoriesToUpdate, state);
 };
@@ -77,4 +77,12 @@ export const setPurchaseEditProviderId = (state, action) => {
   const { providerId } = action.payload;
   const path = ["edit", "providerId"];
   return R.assocPath(path, providerId, state);
+};
+
+export const updatePurchaseEditAmount = (state, action) => {
+  const { amount } = action.payload;
+  const path = ["edit", "amount"];
+  const prev = R.pathOr(0, path, state);
+  const newAmount = Math.round((prev + amount + Number.EPSILON) * 100) / 100;
+  return R.assocPath(path, newAmount, state);
 };
