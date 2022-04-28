@@ -99,16 +99,17 @@ const AddInventory = ({ providerId }) => {
   };
 
   const setInventory = (id) => {
-    const productIndex = R.findIndex(R.propEq("id", id), inventoriesList);
+    const productIndex = R.findIndex(R.propEq("id", id), inventories);
     setInventoryIndex(productIndex);
-    setPriceBought(R.propOr(0, "priceBought", inventoriesList[productIndex]));
-    setPriceToSell(R.propOr(0, "priceToSell", inventoriesList[productIndex]));
-    setProductName(R.propOr(0, "productName", inventoriesList[productIndex]));
+    setPriceBought(R.propOr(0, "priceBought", inventories[productIndex]));
+    setPriceToSell(R.propOr(0, "priceToSell", inventories[productIndex]));
+    setProductName(R.propOr(0, "productName", inventories[productIndex]));
   };
 
   return (
     <>
       <Button
+        type="normal"
         text="Add Inventory"
         onClick={() => {
           setIsOpen(true);
@@ -165,9 +166,9 @@ const AddInventory = ({ providerId }) => {
 
           <div className="mt-4">
             {!update ? (
-              <Button text="Add" onClick={onSubmit} />
+              <Button type="normal" text="Add" onClick={onSubmit} />
             ) : (
-              <Button text="update" onClick={onUpdate} />
+              <Button type="normal" text="update" onClick={onUpdate} />
             )}
           </div>
         </form>

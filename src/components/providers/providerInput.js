@@ -54,6 +54,7 @@ const ProviderInput = () => {
   return (
     <>
       <Button
+        type="normal"
         text="Add Provider"
         onClick={() => {
           setIsOpen(true);
@@ -102,7 +103,7 @@ const ProviderInput = () => {
             }}
           />
           <div className="mt-4">
-            <Button text="Add" onClick={onSubmit()} />
+            <Button type="normal" text="Add" onClick={onSubmit()} />
           </div>
         </form>
       </Modal>

@@ -1,13 +1,14 @@
-import inventorySlice from "../slice";
 import * as R from "ramda";
+
+import inventorySlice from "../slice";
 import { makeRequest } from "../../../lib/makeRequest";
+import * as purchaseSlice from "../../purchases";
 
 export const getInventories = () => async (dispatch) => {
   try {
     const res = await makeRequest(`inventory`, "get", null, dispatch);
     dispatch(inventorySlice.actions.setInventories({ inventories: res.data }));
   } catch (e) {
-    console.log(e.response.status, "error");
     throw e;
   }
 };
@@ -59,55 +60,45 @@ export const updateInventory =
     }
   };
 
-export const inventoriesToUpdate =
-  (inventory, callback) => async (dispatch, getState) => {
-    const { inventory: inventoryState } = getState();
-    const inventoriesToUpdate = R.pathOr(
-      [],
-      ["inventoriesToUpdate"],
-      inventoryState
-    );
-    let itemIndex = R.findIndex(R.propEq("inventoryId", inventory.inventoryId))(
-      inventoriesToUpdate
-    );
-
-    if (itemIndex >= 0) {
-      let update = {
-        ...inventory,
-        update: {
-          ...inventory.update,
-          quantity:
-            inventory.update.quantity +
-            inventoriesToUpdate[itemIndex].update.quantity,
-        },
-      };
-      dispatch(
-        inventorySlice.actions.updateAddedInventory({
-          inventory: update,
-          itemIndex,
-        })
-      );
-      return callback();
+export const createInventory =
+  (inventory, fromPurchase, callback) => async (dispatch, getState) => {
+    const {
+      inventory: { inventories },
+    } = getState();
+    try {
+      const res = await makeRequest(`inventory`, "post", inventory, dispatch);
+      dispatch(inventorySlice.actions.createInventory({ inventory: res.data }));
+      if (fromPurchase) {
+        const {
+          id: inventoryId,
+          quantity,
+          priceBought,
+          priceToSell,
+          productName,
+        } = res.data;
+        const item = {
+          update: {
+            quantity,
+            priceBought,
+            priceToSell,
+            productName,
+            prevQuantity: 0,
+          },
+          inventoryId,
+          index: inventories.length,
+        };
+        dispatch(
+          purchaseSlice.actions.newItemAdded({
+            item: { inventoryId: res.data.id, index: inventories.length },
+          })
+        );
+        dispatch(
+          purchaseSlice.actions.inventoriesToUpdate({ inventory: item })
+        );
+      }
+      callback();
+    } catch (e) {
+      callback(e);
+      throw e;
     }
-    dispatch(inventorySlice.actions.inventoriesToUpdate({ inventory }));
-    callback();
   };
-
-export const updateAddedInventory =
-  (inventory, itemIndex, callback) => async (dispatch) => {
-    dispatch(
-      inventorySlice.actions.updateAddedInventory({ inventory, itemIndex })
-    );
-    callback();
-  };
-
-export const createInventory = (inventory, callback) => async (dispatch) => {
-  try {
-    const res = await makeRequest(`inventory`, "post", inventory, dispatch);
-    dispatch(inventorySlice.actions.createInventory({ inventory: res.data }));
-    callback();
-  } catch (e) {
-    callback(e);
-    throw e;
-  }
-};

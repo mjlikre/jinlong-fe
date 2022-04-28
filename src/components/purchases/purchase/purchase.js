@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import * as R from "ramda";
-
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { purchaseEdit } from "../../../store/purchases/selectors";
 import { providersSelector } from "../../../store/provider/selectors";
@@ -20,9 +18,11 @@ import Input from "../../generics/input";
 
 const Purchase = () => {
   const { purchaseId } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const providerList = useSelector(providersSelector);
   const purchase = useSelector(purchaseEdit);
+  const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     if (purchaseId !== "new") {
@@ -34,6 +34,30 @@ const Purchase = () => {
 
   const setProviderId = (providerId) => {
     dispatch(purchasesSlice.actions.setPurchaseEditProviderId({ providerId }));
+  };
+
+  useEffect(() => {
+    setAmount(purchase.amount);
+  }, [purchase]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(purchasesSlice.thunks.cancelPurchase());
+    };
+  }, []);
+
+  const onSubmit = () => {
+    const finalPurchase = {
+      amount,
+      itemsPurchased: purchase.itemsPurchased,
+      providerId: purchase.providerId,
+    };
+    console.log(finalPurchase);
+  };
+
+  const onCancel = () => {
+    dispatch(purchasesSlice.thunks.cancelPurchase());
+    navigate("/purchases");
   };
 
   return (
@@ -59,7 +83,7 @@ const Purchase = () => {
       {purchase.providerId && (
         <div className="flex w-full justify-around">
           <AddInventory providerId={purchase.providerId} />
-          <InventoryInput />
+          <InventoryInput fromPurchase providerId={purchase.providerId} />
         </div>
       )}
 
@@ -72,15 +96,16 @@ const Purchase = () => {
         <div className="w-8/12">
           <Input
             label="Total Amount: "
-            value={purchase.amount}
+            value={amount}
             type="number"
             onChange={(e) => {
-              console.log(e.target.value);
+              setAmount(e.target.value);
             }}
           />
         </div>
         <div className="w-3-12">
-          <Button text="Submit" />
+          <Button type="cancel" text="Cancel" onClick={onCancel} />
+          <Button type="normal" text="Submit" onClick={onSubmit} />
         </div>
       </div>
     </>

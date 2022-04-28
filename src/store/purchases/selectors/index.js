@@ -30,3 +30,8 @@ export const purchaseItemUpdateSelector = createSelector(
   baseSelector,
   R.propOr(false, "update")
 );
+
+export const currentPurchaseProviderIdSelector = createSelector(
+  purchaseEdit,
+  R.propOr(null, "providerId")
+);

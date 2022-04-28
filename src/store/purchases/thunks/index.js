@@ -2,6 +2,8 @@ import * as R from "ramda";
 
 import { makeRequest } from "../../../lib/makeRequest";
 import purchasesSlice from "../slice";
+import * as inventorySlice from "../../inventory";
+import { path } from "ramda";
 
 export const getPurchases = () => async (dispatch) => {
   try {
@@ -148,3 +150,15 @@ export const deleteItemFromList =
       purchasesSlice.actions.updatePurchaseEditAmount({ amount: -amount })
     );
   };
+
+export const cancelPurchase = () => async (dispatch, getState) => {
+  const { purchase } = getState();
+  const path = ["edit", "newItemsAdded"];
+  const newItemsAdded = R.pathOr([], path, purchase);
+  if (newItemsAdded.length) {
+    newItemsAdded.map((item) =>
+      dispatch(inventorySlice.thunks.deleteInventory(item))
+    );
+  }
+  dispatch(purchasesSlice.actions.resetEdit());
+};

@@ -86,3 +86,22 @@ export const updatePurchaseEditAmount = (state, action) => {
   const newAmount = Math.round((prev + amount + Number.EPSILON) * 100) / 100;
   return R.assocPath(path, newAmount, state);
 };
+
+export const newItemAdded = (state, action) => {
+  const { item } = action.payload;
+  const path = ["edit", "newItemsAdded"];
+  const prev = R.pathOr([], path, state);
+  return R.assocPath(path, R.append(item, prev), state);
+};
+
+export const resetEdit = (state, action) => {
+  const path = ["edit"];
+  const initialEditState = {
+    providerId: null,
+    amount: 0,
+    itemsPurchased: [],
+    open: false,
+    newItemsAdded: [],
+  };
+  return R.assocPath(path, initialEditState, state);
+};

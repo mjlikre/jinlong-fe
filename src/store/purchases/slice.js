@@ -10,11 +10,12 @@ export const initialState = {
     amount: 0,
     itemsPurchased: [],
     open: false,
+    newItemsAdded: [],
   },
 };
 
 const purchasesSlice = createSlice({
-  name: "purchases",
+  name: "purchase",
   initialState,
   reducers,
 });
