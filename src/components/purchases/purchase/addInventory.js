@@ -27,7 +27,7 @@ const AddInventory = ({ providerId }) => {
 
   const inventoriesList = useMemo(
     () => R.filter(R.propEq("providerId", providerId), inventories),
-    [providerId]
+    [providerId, inventories]
   );
 
   useEffect(() => {
@@ -84,12 +84,14 @@ const AddInventory = ({ providerId }) => {
       priceToSell,
       productName,
       quantity: parseInt(quantity),
-      prevQuantity: R.propOr(0, "quantity", inventoriesList[inventoryIndex]),
+      prevQuantity: R.propOr(0, "quantity", inventories[inventoryIndex]),
+      prevPriceBought: R.propOr(0, "priceBought", inventories[inventoryIndex]),
+      prevPriceToSell: R.propOr(0, "priceToSell", inventories[inventoryIndex]),
     };
     dispatch(
       purchasesSlice.thunks.inventoriesToUpdate(
         {
-          inventoryId: R.propOr("", "id", inventoriesList[inventoryIndex]),
+          inventoryId: R.propOr("", "id", inventories[inventoryIndex]),
           update: inventory,
           index: inventoryIndex,
         },

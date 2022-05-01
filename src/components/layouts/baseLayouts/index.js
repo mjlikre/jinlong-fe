@@ -18,8 +18,9 @@ const BaseLayouts = ({ children, className }) => {
   }, [authentication]);
 
   useEffect(() => {
-    !fetched && dispatch(fetchedSlice.thunks.fetched());
+    !fetched && dispatch(fetchedSlice.thunks.fetch());
   }, [fetched]);
+
   return (
     <>
       <Navbar />

@@ -43,7 +43,7 @@ export const updateProvider =
     try {
       const res = await makeRequest(
         `provider/${providerId}`,
-        "patch",
+        "put",
         update,
         dispatch
       );

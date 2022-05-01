@@ -12,6 +12,9 @@ const InventoryTable = () => {
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
+        #
+      </th>
+      <th scope="col" className="px-6 py-3">
         Product name
       </th>
       <th scope="col" className="px-6 py-3">
@@ -34,6 +37,12 @@ const InventoryTable = () => {
         key={index}
         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
       >
+        <th
+          scope="row"
+          className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+        >
+          {index + 1}
+        </th>
         <th
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"

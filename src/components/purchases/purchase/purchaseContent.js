@@ -7,7 +7,7 @@ import * as purchaseSlice from "../../../store/purchases";
 
 import Table from "../../generics/table";
 
-const PurchaseContent = ({ inventories = [] }) => {
+const PurchaseContent = ({ inventories = [], viewOnly }) => {
   const dispatch = useDispatch();
   const renderTHead = () => (
     <tr>
@@ -23,12 +23,16 @@ const PurchaseContent = ({ inventories = [] }) => {
       <th scope="col" className="px-6 py-3 text-center">
         Buy Price
       </th>
-      <th scope="col" className="px-6 py-3 text-center">
-        Edit
-      </th>
-      <th scope="col" className="px-6 py-3 text-center">
-        Remove
-      </th>
+      {!viewOnly && (
+        <th scope="col" className="px-6 py-3 text-center">
+          Edit
+        </th>
+      )}
+      {!viewOnly && (
+        <th scope="col" className="px-6 py-3 text-center">
+          Remove
+        </th>
+      )}
     </tr>
   );
 
@@ -58,25 +62,30 @@ const PurchaseContent = ({ inventories = [] }) => {
         <td className="px-6 py-4 text-center">
           {inventory.update.priceBought}
         </td>
-        <td className="px-6 py-4 text-center">
-          <div
-            onClick={setInventoryUpdate({ ...inventory, itemIndex: index })}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-100 flex justify-center"
-          >
-            <Edit className="w-6 h-6" />
-          </div>
-        </td>
-        <td className="px-6 py-4">
-          <div
-            onClick={deleteInventoryToUpdate({
-              ...inventory,
-              itemIndex: index,
-            })}
-            className="font-medium text-red-50 dark:text-red-400 hover:text-red-100 flex justify-center"
-          >
-            <MinusCircle className="w-6 h-6" />
-          </div>
-        </td>
+        {!viewOnly && (
+          <td className="px-6 py-4 text-center">
+            <div
+              onClick={setInventoryUpdate({ ...inventory, itemIndex: index })}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-100 flex justify-center"
+            >
+              <Edit className="w-6 h-6" />
+            </div>
+          </td>
+        )}
+
+        {!viewOnly && (
+          <td className="px-6 py-4">
+            <div
+              onClick={deleteInventoryToUpdate({
+                ...inventory,
+                itemIndex: index,
+              })}
+              className="font-medium text-red-50 dark:text-red-400 hover:text-red-100 flex justify-center"
+            >
+              <MinusCircle className="w-6 h-6" />
+            </div>
+          </td>
+        )}
       </tr>
     ));
   return <Table renderTHead={renderTHead} renderTBody={renderTBody} />;

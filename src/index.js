@@ -33,6 +33,7 @@ root.render(
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/providers" element={<Providers />} />
         <Route path="/purchases" element={<Purchases />}>
+          <Route path=":purchaseId/:index" element={<Purchase />} />
           <Route path=":purchaseId" element={<Purchase />} />
         </Route>
         <Route path="/clients" element={<Clients />} />

@@ -43,7 +43,7 @@ export const updateClient =
     try {
       const res = await makeRequest(
         `client/${clientId}`,
-        "patch",
+        "put",
         update,
         dispatch
       );

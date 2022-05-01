@@ -1,5 +1,3 @@
-import * as R from "ramda";
-
 import inventorySlice from "../slice";
 import { makeRequest } from "../../../lib/makeRequest";
 import * as purchaseSlice from "../../purchases";
@@ -46,16 +44,16 @@ export const updateInventory =
     try {
       const res = await makeRequest(
         `inventory/${inventoryId}`,
-        "patch",
+        "put",
         update,
         dispatch
       );
       dispatch(
         inventorySlice.actions.updateInventory({ inventory: res.data, index })
       );
-      callback();
+      callback && callback();
     } catch (e) {
-      callback(e);
+      callback && callback(e);
       throw e;
     }
   };

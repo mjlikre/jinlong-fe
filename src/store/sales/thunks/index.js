@@ -38,7 +38,7 @@ export const updateSale =
     try {
       const res = await makeRequest(
         `sales/${salesId}`,
-        "patch",
+        "put",
         update,
         dispatch
       );

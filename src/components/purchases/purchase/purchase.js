@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import { purchaseEdit } from "../../../store/purchases/selectors";
 import { providersSelector } from "../../../store/provider/selectors";
+import { fetchedSelector } from "../../../store/fetched/selectors";
 
 import * as purchasesSlice from "../../../store/purchases";
 
@@ -15,22 +16,26 @@ import InventoryInput from "../../inventory/inventoryInput";
 import PurchaseContent from "./purchaseContent";
 import Button from "../../generics/buttons";
 import Input from "../../generics/input";
+import DisabledInput from "../../generics/input/disabled";
 
 const Purchase = () => {
-  const { purchaseId } = useParams();
+  const { purchaseId, index = -1 } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const providerList = useSelector(providersSelector);
   const purchase = useSelector(purchaseEdit);
+  const fetched = useSelector(fetchedSelector);
+  const [viewOnly, setViewOnly] = useState(false);
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     if (purchaseId !== "new") {
       dispatch(purchasesSlice.thunks.setPurchase(purchaseId));
+      setViewOnly(true);
     } else {
       dispatch(purchasesSlice.actions.setPurchaseEdit({ purchaseState: true }));
     }
-  }, [purchaseId]);
+  }, [purchaseId, fetched]);
 
   const setProviderId = (providerId) => {
     dispatch(purchasesSlice.actions.setPurchaseEditProviderId({ providerId }));
@@ -52,7 +57,8 @@ const Purchase = () => {
       itemsPurchased: purchase.itemsPurchased,
       providerId: purchase.providerId,
     };
-    console.log(finalPurchase);
+    dispatch(purchasesSlice.thunks.createPurchase(finalPurchase));
+    navigate("/purchases");
   };
 
   const onCancel = () => {
@@ -60,27 +66,38 @@ const Purchase = () => {
     navigate("/purchases");
   };
 
+  const onDelete = () => {
+    dispatch(purchasesSlice.thunks.deletePurchase(purchaseId, index));
+    navigate("/purchases");
+  };
+
   return (
     <>
       <div className="flex w-full justify-around">
         <div className="w-8/12">
-          <Select
-            label="Provider"
-            renderOptions={providerList.map((provider, index) => (
-              <option key={index} value={provider.id}>
-                {provider.providerName}
-              </option>
-            ))}
-            onChange={(e) => {
-              setProviderId(e.target.value);
-            }}
-          />
+          {viewOnly ? (
+            <DisabledInput label="Provider" value={purchase.providerName} />
+          ) : (
+            <Select
+              label="Provider"
+              renderOptions={providerList.map((provider, index) => (
+                <option key={index} value={provider.id}>
+                  {provider.providerName}
+                </option>
+              ))}
+              onChange={(e) => {
+                setProviderId(e.target.value);
+              }}
+            />
+          )}
         </div>
-        <div className="w-3-12">
-          <ProviderInput />
-        </div>
+        {!viewOnly && (
+          <div className="w-3-12">
+            <ProviderInput />
+          </div>
+        )}
       </div>
-      {purchase.providerId && (
+      {purchase.providerId && !viewOnly && (
         <div className="flex w-full justify-around">
           <AddInventory providerId={purchase.providerId} />
           <InventoryInput fromPurchase providerId={purchase.providerId} />
@@ -90,22 +107,35 @@ const Purchase = () => {
       <div className="w-full pt-5">
         <p className="font-light">Items purchased</p>
 
-        <PurchaseContent inventories={purchase.itemsPurchased} />
+        <PurchaseContent
+          inventories={purchase.itemsPurchased}
+          viewOnly={viewOnly}
+        />
       </div>
       <div className="w-full pt-5 flex justify-around">
         <div className="w-8/12">
-          <Input
-            label="Total Amount: "
-            value={amount}
-            type="number"
-            onChange={(e) => {
-              setAmount(e.target.value);
-            }}
-          />
+          {viewOnly ? (
+            <DisabledInput label="Total Amount" value={amount} />
+          ) : (
+            <Input
+              label="Total Amount: "
+              value={amount}
+              type="number"
+              onChange={(e) => {
+                setAmount(e.target.value);
+              }}
+            />
+          )}
         </div>
         <div className="w-3-12">
-          <Button type="cancel" text="Cancel" onClick={onCancel} />
-          <Button type="normal" text="Submit" onClick={onSubmit} />
+          {viewOnly ? (
+            <Button type="cancel" text="Delete" onClick={onDelete} />
+          ) : (
+            <>
+              <Button type="cancel" text="Cancel" onClick={onCancel} />
+              <Button type="normal" text="Submit" onClick={onSubmit} />
+            </>
+          )}
         </div>
       </div>
     </>

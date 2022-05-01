@@ -3,17 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as inventorySlice from "../../store/inventory";
 
-import { providersSelector } from "../../store/provider/selectors";
 import { inventoryUpdateSelector } from "../../store/inventory/selectors";
 
 import Input from "../generics/input";
 import Button from "../generics/buttons";
 import Modal from "../generics/modal";
-import Select from "../generics/select";
 
 const UpdateInventory = () => {
   const update = useSelector(inventoryUpdateSelector);
-  const providerList = useSelector(providersSelector) || [];
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +18,6 @@ const UpdateInventory = () => {
   const [priceBought, setPriceBought] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [priceToSell, setPriceToSell] = useState(0);
-  const [provider, setProvider] = useState("");
 
   useEffect(() => {
     if (update) {
@@ -29,7 +25,6 @@ const UpdateInventory = () => {
       setPriceBought(update.priceBought);
       setPriceToSell(update.priceToSell);
       setQuantity(update.quantity);
-      setProvider(update.providerId);
       setIsOpen(true);
     }
   }, [update]);
@@ -51,7 +46,6 @@ const UpdateInventory = () => {
       priceBought,
       priceToSell,
       quantity,
-      providerId: provider,
     };
     dispatch(
       inventorySlice.thunks.updateInventory(
@@ -95,17 +89,6 @@ const UpdateInventory = () => {
             type="number"
             onChange={(e) => {
               setPriceToSell(e.target.value);
-            }}
-          />
-          <Select
-            label="Provider"
-            renderOptions={providerList.map((provider, index) => (
-              <option key={index} value={provider.id}>
-                {provider.providerName}
-              </option>
-            ))}
-            onChange={(e) => {
-              setProvider(e.target.value);
             }}
           />
           <div className="mt-4">

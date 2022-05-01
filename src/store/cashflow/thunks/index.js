@@ -43,7 +43,7 @@ export const updateCashflow =
     try {
       const res = await makeRequest(
         `cashflow/${cashflowId}`,
-        "patch",
+        "put",
         update,
         dispatch
       );
