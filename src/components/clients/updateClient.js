@@ -92,7 +92,7 @@ const UpdateClient = () => {
             }}
           />
           <div className="mt-4">
-            <Button text="Update" onClick={onSubmit()} />
+            <Button type="normal" text="Update" onClick={onSubmit()} />
           </div>
         </form>
       </Modal>

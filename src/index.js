@@ -12,7 +12,8 @@ import Main from "./components/main";
 import Sales from "./components/sales";
 import Inventory from "./components/inventory";
 import Providers from "./components/providers";
-import Purchase from "./components/purchases";
+import Purchases from "./components/purchases";
+import Purchase from "./components/purchases/purchase/purchase";
 import Clients from "./components/clients";
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./store";
@@ -31,7 +32,10 @@ root.render(
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/providers" element={<Providers />} />
-        <Route path="/purchases" element={<Purchase />} />
+        <Route path="/purchases" element={<Purchases />}>
+          <Route path=":purchaseId/:index" element={<Purchase />} />
+          <Route path=":purchaseId" element={<Purchase />} />
+        </Route>
         <Route path="/clients" element={<Clients />} />
         <Route
           path="*"

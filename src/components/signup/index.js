@@ -83,7 +83,7 @@ const SignUp = () => {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Button onClick={onSubmit()} text="Sign Up" />
+              <Button type="normal" onClick={onSubmit()} text="Sign Up" />
             </div>
           </form>
         </div>

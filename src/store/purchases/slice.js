@@ -4,10 +4,18 @@ import * as reducers from "./reducers";
 
 export const initialState = {
   update: false,
+  purchases: [],
+  edit: {
+    providerId: null,
+    amount: 0,
+    itemsPurchased: [],
+    open: false,
+    newItemsAdded: [],
+  },
 };
 
 const purchasesSlice = createSlice({
-  name: "purchases",
+  name: "purchase",
   initialState,
   reducers,
 });

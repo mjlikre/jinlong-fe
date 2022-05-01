@@ -8,5 +8,6 @@ export const setUsers = (state, action) => {
 };
 
 export const removeUser = (state, action) => {
+  localStorage.removeItem("token");
   return R.assocPath(["user"], null, state);
 };

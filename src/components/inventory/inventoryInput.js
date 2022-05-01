@@ -4,16 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import * as inventorySlice from "../../store/inventory";
 
 import { providersSelector } from "../../store/provider/selectors";
-import { inventoryUpdateSelector } from "../../store/inventory/selectors";
 
 import Input from "../generics/input";
 import Button from "../generics/buttons";
 import Select from "../generics/select";
 import Modal from "../generics/modal";
 
-const InventoryInput = () => {
+const InventoryInput = ({ providerId, fromPurchase }) => {
   const providerList = useSelector(providersSelector) || [];
-  const update = useSelector(inventoryUpdateSelector);
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +21,11 @@ const InventoryInput = () => {
   const [priceToSell, setPriceToSell] = useState(0);
   const [provider, setProvider] = useState("");
 
-  useEffect(() => {}, [update]);
+  useEffect(() => {
+    if (fromPurchase) {
+      setProvider(providerId);
+    }
+  }, [providerId, fromPurchase]);
 
   const postSubmission = (e) => {
     if (!e) {
@@ -44,13 +46,20 @@ const InventoryInput = () => {
       quantity,
       providerId: provider,
     };
-    dispatch(inventorySlice.thunks.createInventory(inventory, postSubmission));
+    dispatch(
+      inventorySlice.thunks.createInventory(
+        inventory,
+        fromPurchase,
+        postSubmission
+      )
+    );
   };
 
   return (
     <>
       <Button
-        text="Add Inventory"
+        type="normal"
+        text="Add New Inventory"
         onClick={() => {
           setIsOpen(true);
         }}
@@ -95,19 +104,22 @@ const InventoryInput = () => {
               setPriceToSell(e.target.value);
             }}
           />
-          <Select
-            label="Provider"
-            renderOptions={providerList.map((provider, index) => (
-              <option key={index} value={provider.id}>
-                {provider.providerName}
-              </option>
-            ))}
-            onChange={(e) => {
-              setProvider(e.target.value);
-            }}
-          />
+          {!providerId && !fromPurchase && (
+            <Select
+              label="Provider"
+              renderOptions={providerList.map((provider, index) => (
+                <option key={index} value={provider.id}>
+                  {provider.providerName}
+                </option>
+              ))}
+              onChange={(e) => {
+                setProvider(e.target.value);
+              }}
+            />
+          )}
+
           <div className="mt-4">
-            <Button text="Add" onClick={onSubmit()} />
+            <Button type="normal" text="Add" onClick={onSubmit()} />
           </div>
         </form>
       </Modal>

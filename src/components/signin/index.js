@@ -65,7 +65,7 @@ const SignIn = () => {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Button onClick={onSubmit()} text="Sign In" />
+              <Button type="normal" onClick={onSubmit()} text="Sign In" />
             </div>
           </form>
         </div>

@@ -43,6 +43,7 @@ const ClientInput = () => {
         onClick={() => {
           setIsOpen(true);
         }}
+        type="normal"
       />
       <Modal
         isOpen={isOpen}
@@ -86,7 +87,7 @@ const ClientInput = () => {
           />
 
           <div className="mt-4">
-            <Button text="Add" onClick={onSubmit()} />
+            <Button type="normal" text="Add" onClick={onSubmit()} />
           </div>
         </form>
       </Modal>

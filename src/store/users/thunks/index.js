@@ -3,7 +3,7 @@ import usersSlice from "../slice";
 
 export const signin = (signinInfo, callback) => async (dispatch) => {
   try {
-    const res = await makeRequest("users/login", "post", signinInfo);
+    const res = await makeRequest("users/login", "post", signinInfo, dispatch);
     localStorage.setItem("token", res.data.token);
     dispatch(usersSlice.actions.setUsers({ id: res.data.id }));
     callback();
@@ -14,7 +14,7 @@ export const signin = (signinInfo, callback) => async (dispatch) => {
 
 export const signup = (signupInfo, callback) => async (getState, dispatch) => {
   try {
-    const res = await makeRequest("users", "post", signupInfo);
+    const res = await makeRequest("users", "post", signupInfo, dispatch);
     localStorage.setItem("token", res.data.token);
     dispatch(usersSlice.actions.setUsers({ id: res.data.id }));
     console.log(res);
