@@ -30,8 +30,10 @@ const Purchase = () => {
 
   useEffect(() => {
     if (purchaseId !== "new") {
-      dispatch(purchasesSlice.thunks.setPurchase(purchaseId));
-      setViewOnly(true);
+      fetched &&
+        dispatch(
+          purchasesSlice.thunks.setPurchase(purchaseId, () => setViewOnly(true))
+        );
     } else {
       dispatch(purchasesSlice.actions.setPurchaseEdit({ purchaseState: true }));
     }
@@ -76,7 +78,10 @@ const Purchase = () => {
       <div className="flex w-full justify-around">
         <div className="w-8/12">
           {viewOnly ? (
-            <DisabledInput label="Provider" value={purchase.providerName} />
+            <DisabledInput
+              label="Provider"
+              value={purchase.provider.providerName}
+            />
           ) : (
             <Select
               label="Provider"

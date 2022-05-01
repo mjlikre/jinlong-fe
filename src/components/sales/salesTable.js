@@ -1,12 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { purchasesSelector } from "../../store/purchases/selectors";
+import { salesSelector } from "../../store/sales/selectors";
 
 import Table from "../generics/table";
 
-const PurchaseTable = () => {
-  const purchases = useSelector(purchasesSelector) || [];
+const SalesTable = () => {
+  const sales = useSelector(salesSelector) || [];
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
@@ -19,13 +19,16 @@ const PurchaseTable = () => {
         Amount
       </th>
       <th scope="col" className="px-6 py-3">
+        Client
+      </th>
+      <th scope="col" className="px-6 py-3">
         View
       </th>
     </tr>
   );
 
   const renderTBody = () =>
-    purchases.map((purchase, index) => (
+    sales.map((sale, index) => (
       <tr
         key={index}
         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -40,13 +43,16 @@ const PurchaseTable = () => {
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
         >
-          {new Date(purchase.createdAt).toLocaleDateString()}
+          {new Date(sale.createdAt).toLocaleDateString()}
         </th>
-        <td className="px-6 py-4">{purchase.amount}</td>
+        <td className="px-6 py-4">{sale.amount}</td>
+        <td className="px-6 py-4">
+          {sale.client.firstName} {sale.client.lastName}
+        </td>
         <td className="px-6 py-4">
           <Link
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            to={`/purchases/${purchase.id}/${index}`}
+            to={`/sales/${sale.id}/${index}`}
           >
             View
           </Link>
@@ -56,4 +62,4 @@ const PurchaseTable = () => {
   return <Table renderTHead={renderTHead} renderTBody={renderTBody} />;
 };
 
-export default PurchaseTable;
+export default SalesTable;
