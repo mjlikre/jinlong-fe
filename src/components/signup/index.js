@@ -49,10 +49,7 @@ const SignUp = () => {
           >
             <p className="text-red-500 text-xs italic">{error}</p>
             <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                for="username"
-              >
+              <label className="block text-gray-700 text-sm font-bold mb-2">
                 Username
               </label>
               <input
@@ -66,10 +63,7 @@ const SignUp = () => {
               />
             </div>
             <div className="mb-6">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                for="password"
-              >
+              <label className="block text-gray-700 text-sm font-bold mb-2">
                 Password
               </label>
               <input

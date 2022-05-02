@@ -1,40 +1,34 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import * as R from "ramda";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import * as purchasesSlice from "../../../store/purchases";
+import * as salesSlice from "../../../store/sales";
 
-import { purchaseItemUpdateSelector } from "../../../store/purchases/selectors";
+import { updateSaleItemSelector } from "../../../store/sales/selectors";
 import { inventoriesSelector } from "../../../store/inventory/selectors";
 
 import Input from "../../generics/input";
+import DisabledInput from "../../generics/input/disabled";
 import Button from "../../generics/buttons";
 import Select from "../../generics/select";
 import Modal from "../../generics/modal";
 
-const AddInventory = ({ providerId }) => {
+const AddInventory = () => {
   const inventories = useSelector(inventoriesSelector);
-  const update = useSelector(purchaseItemUpdateSelector);
+  const update = useSelector(updateSaleItemSelector);
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [productName, setProductName] = useState("");
-  const [priceBought, setPriceBought] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [priceToSell, setPriceToSell] = useState(0);
   const [inventoryIndex, setInventoryIndex] = useState("");
-
-  const inventoriesList = useMemo(
-    () => R.filter(R.propEq("providerId", providerId), inventories),
-    [providerId, inventories]
-  );
 
   useEffect(() => {
     if (update) {
       setIsOpen(true);
       setInventoryIndex(update.index);
-      setPriceBought(R.propOr(0, "priceBought", update.update));
       setQuantity(R.propOr(0, "quantity", update.update));
       setPriceToSell(R.propOr(0, "priceToSell", update.update));
       setProductName(R.propOr("", "productName", update.update));
@@ -49,16 +43,14 @@ const AddInventory = ({ providerId }) => {
 
   const onclose = () => {
     setIsOpen(false);
-    setPriceBought("");
     setPriceToSell("");
     setQuantity(0);
     setInventoryIndex("");
-    dispatch(purchasesSlice.actions.setUpdate({ inventory: false }));
+    dispatch(salesSlice.actions.setUpdate({ inventory: false }));
   };
 
   const onUpdate = () => {
     const inventory = {
-      priceBought,
       priceToSell,
       productName,
       quantity: parseInt(quantity),
@@ -66,7 +58,7 @@ const AddInventory = ({ providerId }) => {
     };
 
     dispatch(
-      purchasesSlice.thunks.updateAddedInventory(
+      salesSlice.thunks.updateAddedItem(
         {
           inventoryId: update.inventoryId,
           update: inventory,
@@ -80,16 +72,13 @@ const AddInventory = ({ providerId }) => {
 
   const onSubmit = () => {
     const inventory = {
-      priceBought,
       priceToSell,
       productName,
       quantity: parseInt(quantity),
       prevQuantity: R.propOr(0, "quantity", inventories[inventoryIndex]),
-      prevPriceBought: R.propOr(0, "priceBought", inventories[inventoryIndex]),
-      prevPriceToSell: R.propOr(0, "priceToSell", inventories[inventoryIndex]),
     };
     dispatch(
-      purchasesSlice.thunks.inventoriesToUpdate(
+      salesSlice.thunks.itemsToUpdate(
         {
           inventoryId: R.propOr("", "id", inventories[inventoryIndex]),
           update: inventory,
@@ -103,7 +92,6 @@ const AddInventory = ({ providerId }) => {
   const setInventory = (id) => {
     const productIndex = R.findIndex(R.propEq("id", id), inventories);
     setInventoryIndex(productIndex);
-    setPriceBought(R.propOr(0, "priceBought", inventories[productIndex]));
     setPriceToSell(R.propOr(0, "priceToSell", inventories[productIndex]));
     setProductName(R.propOr(0, "productName", inventories[productIndex]));
   };
@@ -122,7 +110,7 @@ const AddInventory = ({ providerId }) => {
           {!update ? (
             <Select
               label="Inventory"
-              renderOptions={inventoriesList.map((inventory, index) => (
+              renderOptions={inventories.map((inventory, index) => (
                 <option key={index} value={inventory.id}>
                   {inventory.productName}
                 </option>
@@ -132,31 +120,14 @@ const AddInventory = ({ providerId }) => {
               }}
             />
           ) : (
-            <div className="flex justify-center p-5">
-              <div className="w-1/2 h-10 grid justify-items-center border-double border-4 border-sky-500 rounded">
-                <span className="self-center decoration-4">
-                  {update.update.productName}
-                </span>
-              </div>
-            </div>
+            <DisabledInput
+              label="Product Name"
+              value={update.update.productName}
+              type="number"
+            />
           )}
 
-          <Input
-            label="Price Bought"
-            value={priceBought}
-            type="number"
-            onChange={(e) => {
-              setPriceBought(e.target.value);
-            }}
-          />
-          <Input
-            label="Price To Sell"
-            value={priceToSell}
-            type="number"
-            onChange={(e) => {
-              setPriceToSell(e.target.value);
-            }}
-          />
+          <DisabledInput label="Price" value={priceToSell} type="number" />
           <Input
             label="Quantity"
             value={quantity}
@@ -170,7 +141,7 @@ const AddInventory = ({ providerId }) => {
             {!update ? (
               <Button type="normal" text="Add" onClick={onSubmit} />
             ) : (
-              <Button type="normal" text="update" onClick={onUpdate} />
+              <Button type="normal" text="Update" onClick={onUpdate} />
             )}
           </div>
         </form>

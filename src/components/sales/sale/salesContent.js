@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 
 import { MinusCircle, Edit } from "react-feather";
 
-import * as purchaseSlice from "../../../store/purchases";
+import * as salesSlice from "../../../store/sales";
 
 import Table from "../../generics/table";
 
-const PurchaseContent = ({ inventories = [], viewOnly }) => {
+const PurchaseContent = ({ itemList = [], viewOnly }) => {
   const dispatch = useDispatch();
   const renderTHead = () => (
     <tr>
@@ -18,10 +18,10 @@ const PurchaseContent = ({ inventories = [], viewOnly }) => {
         Quantity
       </th>
       <th scope="col" className="px-6 py-3 text-center">
-        Sell Price
+        Price
       </th>
       <th scope="col" className="px-6 py-3 text-center">
-        Buy Price
+        Amount
       </th>
       {!viewOnly && (
         <th scope="col" className="px-6 py-3 text-center">
@@ -36,15 +36,15 @@ const PurchaseContent = ({ inventories = [], viewOnly }) => {
     </tr>
   );
 
-  const setInventoryUpdate = (inventory) => () => {
-    return dispatch(purchaseSlice.actions.setUpdate({ inventory }));
+  const setItemUpdate = (item) => () => {
+    return dispatch(salesSlice.actions.setUpdate({ item }));
   };
 
-  const deleteInventoryToUpdate = (inventory) => () => {
-    return dispatch(purchaseSlice.thunks.deleteItemFromList(inventory));
+  const deleteItemToUpdate = (item) => () => {
+    return dispatch(salesSlice.thunks.deleteItemFromList(item));
   };
   const renderTBody = () =>
-    inventories.map((inventory, index) => (
+    itemList.map((item, index) => (
       <tr
         key={index}
         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -53,19 +53,15 @@ const PurchaseContent = ({ inventories = [], viewOnly }) => {
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap text-center"
         >
-          {inventory.update.productName}
+          {item.update.productName}
         </th>
-        <td className="px-6 py-4 text-center">{inventory.update.quantity}</td>
-        <td className="px-6 py-4 text-center">
-          {inventory.update.priceToSell}
-        </td>
-        <td className="px-6 py-4 text-center">
-          {inventory.update.priceBought}
-        </td>
+        <td className="px-6 py-4 text-center">{item.update.quantity}</td>
+        <td className="px-6 py-4 text-center">{item.update.priceToSell}</td>
+        <td className="px-6 py-4 text-center">{item.update.amount}</td>
         {!viewOnly && (
           <td className="px-6 py-4 text-center">
             <div
-              onClick={setInventoryUpdate({ ...inventory, itemIndex: index })}
+              onClick={setItemUpdate({ ...item, itemIndex: index })}
               className="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-100 flex justify-center"
             >
               <Edit className="w-6 h-6" />
@@ -76,8 +72,8 @@ const PurchaseContent = ({ inventories = [], viewOnly }) => {
         {!viewOnly && (
           <td className="px-6 py-4">
             <div
-              onClick={deleteInventoryToUpdate({
-                ...inventory,
+              onClick={deleteItemToUpdate({
+                ...item,
                 itemIndex: index,
               })}
               className="font-medium text-red-50 dark:text-red-400 hover:text-red-100 flex justify-center"

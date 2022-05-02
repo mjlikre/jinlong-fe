@@ -4,6 +4,13 @@ import * as reducers from "./reducers";
 
 export const initialState = {
   update: false,
+  edit: {
+    clientId: null,
+    amount: 0,
+    itemList: [],
+    open: false,
+  },
+  sales: [],
 };
 
 const salesSlice = createSlice({

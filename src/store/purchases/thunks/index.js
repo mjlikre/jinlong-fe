@@ -126,10 +126,10 @@ export const updateAddedInventory =
         edit: { itemsPurchased },
       },
     } = getState();
-    const prev = itemsPurchased[itemIndex];
+    const prevItem = itemsPurchased[itemIndex];
     const currentAmount =
       inventory.update.quantity * inventory.update.priceBought;
-    const prevAmount = prev.update.quantity * prev.update.priceBought;
+    const prevAmount = prevItem.update.quantity * prevItem.update.priceBought;
     const amount = -prevAmount + currentAmount;
     dispatch(
       purchasesSlice.actions.updateAddedInventory({ inventory, itemIndex })
