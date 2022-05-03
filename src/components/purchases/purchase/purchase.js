@@ -32,7 +32,7 @@ const Purchase = () => {
     if (purchaseId !== "new") {
       fetched &&
         dispatch(
-          purchasesSlice.thunks.setPurchase(purchaseId, () => setViewOnly(true))
+          purchasesSlice.thunks.setPurchase(index, () => setViewOnly(true))
         );
     } else {
       dispatch(purchasesSlice.actions.setPurchaseEdit({ purchaseState: true }));

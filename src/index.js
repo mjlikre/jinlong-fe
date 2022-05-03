@@ -18,6 +18,7 @@ import Purchase from "./components/purchases/purchase/purchase";
 import Clients from "./components/clients";
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./store";
+import ClientView from "./components/clients/clientView";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -40,7 +41,9 @@ root.render(
           <Route path=":purchaseId/:index" element={<Purchase />} />
           <Route path=":purchaseId" element={<Purchase />} />
         </Route>
-        <Route path="/clients" element={<Clients />} />
+        <Route path="/clients" element={<Clients />}>
+          <Route path=":clientId/:index" element={<ClientView />} />
+        </Route>
         <Route
           path="*"
           element={

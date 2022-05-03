@@ -1,14 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { clientsSelector } from "../../store/client/selectors";
-import * as clientSlice from "../../store/client";
+import { Link } from "react-router-dom";
 
 import Table from "../generics/table";
 
 const ClientsTable = () => {
   const clients = useSelector(clientsSelector) || [];
-  const dispatch = useDispatch();
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
@@ -26,8 +25,6 @@ const ClientsTable = () => {
     </tr>
   );
 
-  const setClientUpdate = (client) => () =>
-    dispatch(clientSlice.actions.setUpdate({ client }));
   const renderTBody = () =>
     clients.map((client, index) => (
       <tr
@@ -43,12 +40,12 @@ const ClientsTable = () => {
         <td className="px-6 py-4">{client.phone}</td>
         <td className="px-6 py-4">{client.email}</td>
         <td className="px-6 py-4">
-          <div
-            onClick={setClientUpdate({ ...client, index })}
+          <Link
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            to={`/clients/${client.id}/${index}`}
           >
-            Edit
-          </div>
+            View
+          </Link>
         </td>
       </tr>
     ));

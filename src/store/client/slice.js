@@ -4,6 +4,9 @@ import * as reducers from "./reducers";
 
 export const initialState = {
   update: false,
+  edit: {
+    open: false,
+  },
 };
 
 const clientSlice = createSlice({

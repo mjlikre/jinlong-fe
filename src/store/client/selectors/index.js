@@ -10,6 +10,11 @@ export const clientsSelector = createSelector(
   R.propOr([], "clients")
 );
 
+export const clientSelector = createSelector(
+  baseSelector,
+  R.propOr(false, "client")
+);
+
 export const updateClientSelector = createSelector(
   baseSelector,
   R.propOr(false, "update")

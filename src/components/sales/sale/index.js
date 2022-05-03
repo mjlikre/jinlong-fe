@@ -30,7 +30,7 @@ const Sale = () => {
   useEffect(() => {
     if (saleId !== "new") {
       fetched &&
-        dispatch(salesSlice.thunks.setSale(saleId, () => setViewOnly(true)));
+        dispatch(salesSlice.thunks.setSale(index, () => setViewOnly(true)));
     } else {
       dispatch(salesSlice.actions.setSaleEdit({ saleState: true }));
     }
