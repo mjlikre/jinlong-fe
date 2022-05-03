@@ -31,10 +31,7 @@ const SignIn = () => {
             }`}
           >
             <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                for="username"
-              >
+              <label className="block text-gray-700 text-sm font-bold mb-2">
                 Username
               </label>
               <input
@@ -48,10 +45,7 @@ const SignIn = () => {
               />
             </div>
             <div className="mb-6">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                for="password"
-              >
+              <label className="block text-gray-700 text-sm font-bold mb-2">
                 Password
               </label>
               <input

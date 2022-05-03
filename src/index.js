@@ -10,6 +10,7 @@ import SignIn from "./components/signin";
 import SignUp from "./components/signup";
 import Main from "./components/main";
 import Sales from "./components/sales";
+import Sale from "./components/sales/sale";
 import Inventory from "./components/inventory";
 import Providers from "./components/providers";
 import Purchases from "./components/purchases";
@@ -29,7 +30,10 @@ root.render(
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/sales" element={<Sales />} />
+        <Route path="/sales" element={<Sales />}>
+          <Route path=":saleId/:index" element={<Sale />} />
+          <Route path=":saleId" element={<Sale />} />
+        </Route>
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/providers" element={<Providers />} />
         <Route path="/purchases" element={<Purchases />}>

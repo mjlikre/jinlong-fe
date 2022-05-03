@@ -6,8 +6,13 @@ import * as inventorySlice from "../../inventory";
 
 export const getPurchases = () => async (dispatch) => {
   try {
-    const res = await makeRequest(`purchases`, "get", null, dispatch);
-    dispatch(purchasesSlice.actions.setPurchases({ purchases: res.data }));
+    const { data } = await makeRequest(`purchases`, "get", null, dispatch);
+    const purchases = data.map((item) => ({
+      ...item,
+      itemsPurchased: JSON.parse(item.itemsPurchased),
+    }));
+
+    dispatch(purchasesSlice.actions.setPurchases({ purchases }));
   } catch (e) {
     throw e;
   }
@@ -52,20 +57,18 @@ export const setPurchase =
     const state = getState();
     const {
       purchase: { purchases },
-      providers: { providers },
     } = state;
     try {
       const stringifiedPurchase = R.find(R.propEq("id", purchaseId))(purchases);
-      console.log(state);
-      const { providerId, amount, itemsPurchased } = stringifiedPurchase;
-      const { providerName } = R.find(R.propEq("id", providerId))(providers);
+      const { providerId, amount, itemsPurchased, provider } =
+        stringifiedPurchase;
       const purchase = {
         providerId,
         amount,
-        providerName,
-        itemsPurchased: JSON.parse(itemsPurchased),
+        itemsPurchased,
         open: true,
         newItemsAdded: [],
+        provider,
       };
       purchase && dispatch(purchasesSlice.actions.setPurchase({ purchase }));
       callback && callback();
@@ -123,10 +126,10 @@ export const updateAddedInventory =
         edit: { itemsPurchased },
       },
     } = getState();
-    const prev = itemsPurchased[itemIndex];
+    const prevItem = itemsPurchased[itemIndex];
     const currentAmount =
       inventory.update.quantity * inventory.update.priceBought;
-    const prevAmount = prev.update.quantity * prev.update.priceBought;
+    const prevAmount = prevItem.update.quantity * prevItem.update.priceBought;
     const amount = -prevAmount + currentAmount;
     dispatch(
       purchasesSlice.actions.updateAddedInventory({ inventory, itemIndex })
@@ -172,14 +175,14 @@ export const createPurchase = (purchase) => async (dispatch) => {
         quantity: item.update.quantity + item.update.prevQuantity,
       },
     }));
-    itemsToUpdate.map((item) =>
-      dispatch(inventorySlice.thunks.updateInventory(item))
-    );
     const res = await makeRequest(
       `purchases`,
       "post",
       { ...purchase, itemsPurchased },
       dispatch
+    );
+    itemsToUpdate.map((item) =>
+      dispatch(inventorySlice.thunks.updateInventory(item))
     );
     dispatch(purchasesSlice.actions.createPurchase({ purchase: res.data }));
   } catch (e) {
