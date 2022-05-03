@@ -10,7 +10,7 @@ export const setSales = (state, action) => {
 
 export const setSale = (state, action) => {
   const { sale } = action.payload;
-  return R.assocPath(["sale"], sale, state);
+  return R.assocPath(["edit"], sale, state);
 };
 
 export const setUpdate = (state, action) => {

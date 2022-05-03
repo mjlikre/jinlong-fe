@@ -77,7 +77,7 @@ const Sale = () => {
         <div className="w-8/12">
           {viewOnly ? (
             <DisabledInput
-              label="Provider"
+              label="Client"
               value={`${sale.client.firstName} ${sale.client.lastName}`}
             />
           ) : (

@@ -175,14 +175,14 @@ export const createPurchase = (purchase) => async (dispatch) => {
         quantity: item.update.quantity + item.update.prevQuantity,
       },
     }));
-    itemsToUpdate.map((item) =>
-      dispatch(inventorySlice.thunks.updateInventory(item))
-    );
     const res = await makeRequest(
       `purchases`,
       "post",
       { ...purchase, itemsPurchased },
       dispatch
+    );
+    itemsToUpdate.map((item) =>
+      dispatch(inventorySlice.thunks.updateInventory(item))
     );
     dispatch(purchasesSlice.actions.createPurchase({ purchase: res.data }));
   } catch (e) {

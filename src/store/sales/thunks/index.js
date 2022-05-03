@@ -33,16 +33,16 @@ export const setSale = (salesId, callback) => async (dispatch, getState) => {
   }
 };
 
-export const deleteSale =
-  ({ salesId, index }) =>
-  async (dispatch) => {
-    try {
-      await makeRequest(`sales/${salesId}`, "delete", null, dispatch);
-      dispatch(salesSlice.actions.deleteSale({ index }));
-    } catch (e) {
-      throw e;
-    }
-  };
+// export const deleteSale =
+//   ({ salesId, index }) =>
+//   async (dispatch) => {
+//     try {
+//       await makeRequest(`sales/${salesId}`, "delete", null, dispatch);
+//       dispatch(salesSlice.actions.deleteSale({ index }));
+//     } catch (e) {
+//       throw e;
+//     }
+//   };
 
 export const updateSale =
   ({ salesId, update, index }) =>
@@ -64,18 +64,19 @@ export const createSale = (sale) => async (dispatch) => {
   try {
     const { itemList: itemsSold } = sale;
     const itemList = JSON.stringify(itemsSold);
-    const itemsToUpdate = itemList.map((item) => ({
+    const itemsToUpdate = itemsSold.map((item) => ({
       ...item,
       update: { quantity: item.update.prevQuantity - item.update.quantity },
     }));
-    itemsToUpdate.map((item) =>
-      dispatch(inventorySlice.thunks.updateInventory(item))
-    );
+
     const { data } = await makeRequest(
       `sales`,
       "post",
       { ...sale, itemList },
       dispatch
+    );
+    itemsToUpdate.map((item) =>
+      dispatch(inventorySlice.thunks.updateInventory(item))
     );
     dispatch(salesSlice.actions.createSale({ sale: data }));
   } catch (e) {
@@ -153,7 +154,7 @@ export const cancelSale = (callback) => async (dispatch) => {
   callback && callback();
 };
 
-export const deletePurchase =
+export const deleteSale =
   (saleId, index, callback) => async (dispatch, getState) => {
     const state = getState();
     const itemList = R.path(itemPurchasedPath, state);
@@ -168,7 +169,7 @@ export const deletePurchase =
         dispatch(inventorySlice.thunks.updateInventory(item))
       );
       await makeRequest(`sales/${saleId}`, "delete", null, dispatch);
-      dispatch(salesSlice.actions.deletePurchase({ index }));
+      dispatch(salesSlice.actions.deleteSale({ index }));
       callback && callback();
     } catch (e) {
       callback && callback(e);
