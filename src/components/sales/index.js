@@ -1,11 +1,15 @@
 import React from "react";
-import BaseLayout from "../layouts/baseLayouts";
+import { useSelector } from "react-redux";
 import { Link, Outlet, useParams } from "react-router-dom";
+
+import { salesSelector } from "../../store/sales/selectors";
+
+import BaseLayout from "../layouts/baseLayouts";
 import SalesTable from "./salesTable";
 
 const Sales = () => {
   const { saleId } = useParams();
-
+  const sales = useSelector(salesSelector);
   return (
     <BaseLayout>
       <div className="w-4/6 m-auto">
@@ -18,7 +22,7 @@ const Sales = () => {
               New Sale
             </Link>
             <div className="w-full pt-10">
-              <SalesTable />
+              <SalesTable sales={sales} fromSales />
             </div>
           </>
         ) : (

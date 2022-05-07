@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { providersSelector } from "../../store/provider/selectors";
 import * as providerSlice from "../../store/provider";
@@ -25,6 +26,9 @@ const ProviderTable = () => {
       </th>
       <th scope="col" className="px-6 py-3">
         <span>Edit</span>
+      </th>
+      <th scope="col" className="px-6 py-3">
+        <span>View</span>
       </th>
     </tr>
   );
@@ -55,6 +59,14 @@ const ProviderTable = () => {
           >
             Edit
           </div>
+        </td>
+        <td className="px-6 py-4">
+          <Link
+            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            to={`/clients/${provider.id}/${index}`}
+          >
+            View
+          </Link>
         </td>
       </tr>
     ));

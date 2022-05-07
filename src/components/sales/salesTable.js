@@ -1,12 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
-import { salesSelector } from "../../store/sales/selectors";
 
 import Table from "../generics/table";
 
-const SalesTable = () => {
-  const sales = useSelector(salesSelector) || [];
+const SalesTable = ({ sales = [], fromSales }) => {
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
@@ -18,9 +16,11 @@ const SalesTable = () => {
       <th scope="col" className="px-6 py-3">
         Amount
       </th>
-      <th scope="col" className="px-6 py-3">
-        Client
-      </th>
+      {fromSales && (
+        <th scope="col" className="px-6 py-3">
+          Client
+        </th>
+      )}
       <th scope="col" className="px-6 py-3">
         View
       </th>
@@ -45,10 +45,14 @@ const SalesTable = () => {
         >
           {new Date(sale.createdAt).toLocaleDateString()}
         </th>
+
         <td className="px-6 py-4">{sale.amount}</td>
-        <td className="px-6 py-4">
-          {sale.client.firstName} {sale.client.lastName}
-        </td>
+        {fromSales && (
+          <td className="px-6 py-4">
+            {sale.client.firstName} {sale.client.lastName}
+          </td>
+        )}
+
         <td className="px-6 py-4">
           <Link
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
