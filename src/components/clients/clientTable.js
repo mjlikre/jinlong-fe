@@ -7,25 +7,27 @@ import { clientsSelector } from "../../store/client/selectors";
 
 import Table from "../generics/table";
 
-const ClientsTable = () => {
+import { generic, client } from "../../lib/language";
+
+const ClientsTable = ({ lang }) => {
   const dispatch = useDispatch();
   const clients = useSelector(clientsSelector) || [];
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
-        Client Name
+        {client.name[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        Client Phone
+        {client.phone[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        Client Email
+        {client.email[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        <span>Edit</span>
+        <span>{generic.edit[lang]}</span>
       </th>
       <th scope="col" className="px-6 py-3">
-        <span>View</span>
+        <span>{generic.view[lang]}</span>
       </th>
     </tr>
   );
@@ -52,7 +54,7 @@ const ClientsTable = () => {
             onClick={setClientUpdate({ ...client, index })}
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
-            Edit
+            {generic.edit[lang]}
           </div>
         </td>
         <td className="px-6 py-4">
@@ -60,7 +62,7 @@ const ClientsTable = () => {
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             to={`/clients/${client.id}/${index}`}
           >
-            View
+            {generic.view[lang]}
           </Link>
         </td>
       </tr>

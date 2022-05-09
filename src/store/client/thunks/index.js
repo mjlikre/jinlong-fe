@@ -18,7 +18,6 @@ export const getClient = (clientId) => async (dispatch) => {
       null,
       dispatch
     );
-    console.log(data, "here?");
     dispatch(clientSlice.actions.setClient({ client: data }));
   } catch (e) {
     throw e;

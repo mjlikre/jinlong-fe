@@ -1,29 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { generic } from "../../lib/language";
+import { generic } from "../../../lib/language";
 
-import Table from "../generics/table";
+import Table from "../../generics/table";
 
-const PurchaseTable = ({ items, lang }) => {
+const ProductTable = ({ products, lang }) => {
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3">
         #
       </th>
       <th scope="col" className="px-6 py-3">
-        {generic.date[lang]}
+        {generic.productName[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        {generic.amount[lang]}
+        {generic.quantity[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        {generic.view[lang]}
+        {generic.priceToSell[lang]}
       </th>
     </tr>
   );
-
   const renderTBody = () =>
-    items.map((purchase, index) => (
+    products.map((inventory, index) => (
       <tr
         key={index}
         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -38,20 +36,18 @@ const PurchaseTable = ({ items, lang }) => {
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
         >
-          {new Date(purchase.createdAt).toLocaleDateString()}
+          {inventory.productName}
         </th>
-        <td className="px-6 py-4">{purchase.amount}</td>
-        <td className="px-6 py-4">
-          <Link
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            to={`/purchases/${purchase.id}/${index}`}
-          >
-            {generic.view[lang]}
-          </Link>
-        </td>
+        <td className="px-6 py-4">{inventory.quantity}</td>
+        <td className="px-6 py-4">{inventory.priceToSell}</td>
       </tr>
     ));
-  return <Table renderTHead={renderTHead} renderTBody={renderTBody} />;
+  return (
+    <div className="mt-8">
+      <p className="text-xl"></p>
+      <Table renderTHead={renderTHead} renderTBody={renderTBody} />
+    </div>
+  );
 };
 
-export default PurchaseTable;
+export default ProductTable;

@@ -12,8 +12,9 @@ import Input from "../../generics/input";
 import Button from "../../generics/buttons";
 import Select from "../../generics/select";
 import Modal from "../../generics/modal";
+import { generic, inventory } from "../../../lib/language";
 
-const AddInventory = ({ providerId }) => {
+const AddInventory = ({ providerId, lang }) => {
   const inventories = useSelector(inventoriesSelector);
   const update = useSelector(purchaseItemUpdateSelector);
   const dispatch = useDispatch();
@@ -112,16 +113,16 @@ const AddInventory = ({ providerId }) => {
     <>
       <Button
         type="normal"
-        text="Add Inventory"
+        text={inventory.add[lang]}
         onClick={() => {
           setIsOpen(true);
         }}
       />
-      <Modal isOpen={isOpen} setIsOpen={onclose} title="Add Inventory">
+      <Modal isOpen={isOpen} setIsOpen={onclose} title={inventory.add[lang]}>
         <form className="w-full max-w-sm">
           {!update ? (
             <Select
-              label="Inventory"
+              label={generic.inventory[lang]}
               renderOptions={inventoriesList.map((inventory, index) => (
                 <option key={index} value={inventory.id}>
                   {inventory.productName}
@@ -142,7 +143,7 @@ const AddInventory = ({ providerId }) => {
           )}
 
           <Input
-            label="Price Bought"
+            label={generic.priceBought[lang]}
             value={priceBought}
             type="number"
             onChange={(e) => {
@@ -150,7 +151,7 @@ const AddInventory = ({ providerId }) => {
             }}
           />
           <Input
-            label="Price To Sell"
+            label={generic.priceToSell[lang]}
             value={priceToSell}
             type="number"
             onChange={(e) => {
@@ -158,7 +159,7 @@ const AddInventory = ({ providerId }) => {
             }}
           />
           <Input
-            label="Quantity"
+            label={generic.quantity[lang]}
             value={quantity}
             type="number"
             onChange={(e) => {
@@ -168,9 +169,17 @@ const AddInventory = ({ providerId }) => {
 
           <div className="mt-4">
             {!update ? (
-              <Button type="normal" text="Add" onClick={onSubmit} />
+              <Button
+                type="normal"
+                text={generic.add[lang]}
+                onClick={onSubmit}
+              />
             ) : (
-              <Button type="normal" text="update" onClick={onUpdate} />
+              <Button
+                type="normal"
+                text={generic.update[lang]}
+                onClick={onUpdate}
+              />
             )}
           </div>
         </form>

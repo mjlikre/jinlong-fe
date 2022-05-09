@@ -54,6 +54,7 @@ export const updatePurchase =
 
 export const setPurchase = (index, callback) => async (dispatch, getState) => {
   const state = getState();
+  console.log("here?");
   const {
     purchase: { purchases },
   } = state;

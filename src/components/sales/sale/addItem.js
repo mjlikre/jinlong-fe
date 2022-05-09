@@ -13,8 +13,9 @@ import DisabledInput from "../../generics/input/disabled";
 import Button from "../../generics/buttons";
 import Select from "../../generics/select";
 import Modal from "../../generics/modal";
+import { generic, inventory } from "../../../lib/language";
 
-const AddInventory = () => {
+const AddInventory = ({ lang }) => {
   const inventories = useSelector(inventoriesSelector);
   const update = useSelector(updateSaleItemSelector);
   const dispatch = useDispatch();
@@ -100,7 +101,7 @@ const AddInventory = () => {
     <>
       <Button
         type="normal"
-        text="Add Inventory"
+        text={inventory.add[lang]}
         onClick={() => {
           setIsOpen(true);
         }}
@@ -109,7 +110,7 @@ const AddInventory = () => {
         <form className="w-full max-w-sm">
           {!update ? (
             <Select
-              label="Inventory"
+              label={generic.inventory[lang]}
               renderOptions={inventories.map((inventory, index) => (
                 <option key={index} value={inventory.id}>
                   {inventory.productName}
@@ -121,15 +122,19 @@ const AddInventory = () => {
             />
           ) : (
             <DisabledInput
-              label="Product Name"
+              label={generic.productName[lang]}
               value={update.update.productName}
               type="number"
             />
           )}
 
-          <DisabledInput label="Price" value={priceToSell} type="number" />
+          <DisabledInput
+            label={generic.price[lang]}
+            value={priceToSell}
+            type="number"
+          />
           <Input
-            label="Quantity"
+            label={generic.quantity[lang]}
             value={quantity}
             type="number"
             onChange={(e) => {
@@ -139,9 +144,17 @@ const AddInventory = () => {
 
           <div className="mt-4">
             {!update ? (
-              <Button type="normal" text="Add" onClick={onSubmit} />
+              <Button
+                type="normal"
+                text={generic.add[lang]}
+                onClick={onSubmit}
+              />
             ) : (
-              <Button type="normal" text="Update" onClick={onUpdate} />
+              <Button
+                type="normal"
+                text={generic.update[lang]}
+                onClick={onUpdate}
+              />
             )}
           </div>
         </form>

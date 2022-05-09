@@ -16,8 +16,11 @@ import SaleContent from "./salesContent";
 import Button from "../../generics/buttons";
 import Input from "../../generics/input";
 import DisabledInput from "../../generics/input/disabled";
+import { generic, sales as salesLang } from "../../../lib/language";
+import { userDisplayLanguageSelector } from "../../../store/users/selectors";
 
 const Sale = () => {
+  const lang = useSelector(userDisplayLanguageSelector);
   const { saleId, index = -1 } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -73,66 +76,71 @@ const Sale = () => {
 
   return (
     <>
-      <div className="flex w-full justify-around">
+      <div className="flex w-full justify-around pt-10">
         <div className="w-8/12">
-          {viewOnly ? (
-            <DisabledInput
-              label="Client"
-              value={`${sale.client.firstName} ${sale.client.lastName}`}
-            />
-          ) : (
-            <Select
-              label="Clients"
-              renderOptions={clientList.map((client, index) => (
-                <option key={index} value={client.id}>
-                  {client.firstName} {client.lastName}
-                </option>
-              ))}
-              onChange={(e) => {
-                setClientId(e.target.value);
-              }}
-            />
-          )}
-        </div>
-        {!viewOnly && (
-          <div className="w-3-12">
-            <ClientInput />
-          </div>
-        )}
-      </div>
-      {sale.clientId && !viewOnly && (
-        <div className="flex w-full justify-around">
-          <AddItem clientId={sale.clientId} />
-        </div>
-      )}
+          <p className="font-light text-xl">{salesLang.items[lang]}</p>
 
-      <div className="w-full pt-5">
-        <p className="font-light">Items Sold</p>
-
-        <SaleContent itemList={sale.itemList} viewOnly={viewOnly} />
-      </div>
-      <div className="w-full pt-5 flex justify-around">
-        <div className="w-8/12">
-          {viewOnly ? (
-            <DisabledInput label="Total Amount" value={amount} />
-          ) : (
-            <Input
-              label="Total Amount: "
-              value={amount}
-              type="number"
-              onChange={(e) => {
-                setAmount(e.target.value);
-              }}
-            />
-          )}
+          <SaleContent
+            itemList={sale.itemList}
+            viewOnly={viewOnly}
+            lang={lang}
+          />
         </div>
-        <div className="w-3-12">
+        <div className="w-3/12 bg-sky-50 p-5 rounded-lg">
           {viewOnly ? (
-            <Button type="cancel" text="Delete" onClick={onDelete} />
+            <div className="flex flex-col justify-end">
+              <DisabledInput
+                label={generic.client[lang]}
+                value={`${sale.client.firstName} ${sale.client.lastName}`}
+              />
+              <DisabledInput label={generic.totalAmount[lang]} value={amount} />
+              <Button
+                type="cancel"
+                text={generic.delete[lang]}
+                onClick={onDelete}
+              />
+            </div>
           ) : (
             <>
-              <Button type="cancel" text="Cancel" onClick={onCancel} />
-              <Button type="normal" text="Submit" onClick={onSubmit} />
+              <Select
+                label={generic.client[lang]}
+                renderOptions={clientList.map((client, index) => (
+                  <option key={index} value={client.id}>
+                    {client.firstName} {client.lastName}
+                  </option>
+                ))}
+                onChange={(e) => {
+                  setClientId(e.target.value);
+                }}
+              />
+              <div className="pb-4 flex justify-end">
+                {sale.clientId ? (
+                  <AddItem clientId={sale.clientId} lang={lang} />
+                ) : (
+                  <ClientInput lang={lang} />
+                )}
+              </div>
+
+              <Input
+                label={`${generic.totalAmount[lang]}: `}
+                value={amount}
+                type="number"
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+              />
+              <div className="flex justify-end space-x-4">
+                <Button
+                  type="cancel"
+                  text={generic.cancel[lang]}
+                  onClick={onCancel}
+                />
+                <Button
+                  type="normal"
+                  text={generic.submit[lang]}
+                  onClick={onSubmit}
+                />
+              </div>
             </>
           )}
         </div>

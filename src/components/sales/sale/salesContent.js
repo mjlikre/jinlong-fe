@@ -6,31 +6,32 @@ import { MinusCircle, Edit } from "react-feather";
 import * as salesSlice from "../../../store/sales";
 
 import Table from "../../generics/table";
+import { generic } from "../../../lib/language";
 
-const PurchaseContent = ({ itemList = [], viewOnly }) => {
+const PurchaseContent = ({ itemList = [], viewOnly, lang }) => {
   const dispatch = useDispatch();
   const renderTHead = () => (
     <tr>
       <th scope="col" className="px-6 py-3 text-center">
-        Product name
+        {generic.productName[lang]}
       </th>
       <th scope="col" className="px-6 py-3 text-center">
-        Quantity
+        {generic.quantity[lang]}
       </th>
       <th scope="col" className="px-6 py-3 text-center">
-        Price
+        {generic.price[lang]}
       </th>
       <th scope="col" className="px-6 py-3 text-center">
-        Amount
+        {generic.amount[lang]}
       </th>
       {!viewOnly && (
         <th scope="col" className="px-6 py-3 text-center">
-          Edit
+          {generic.edit[lang]}
         </th>
       )}
       {!viewOnly && (
         <th scope="col" className="px-6 py-3 text-center">
-          Remove
+          {generic.delete[lang]}
         </th>
       )}
     </tr>

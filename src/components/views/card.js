@@ -1,12 +1,18 @@
-import React, { useMemo } from "react";
-import * as R from "ramda";
+import React from "react";
 
-import { buildString } from "../../../lib/utils";
+import { buildString } from "../../lib/utils";
+import { generic, client, provider } from "../../lib/language";
 
-const ClientCard = ({ client, className }) => {
-  const amountSpent = useMemo(() =>
-    R.reduce((acc, item) => R.add(acc, item.amount), 0, client.purchase)
-  );
+const Card = ({
+  name,
+  phone,
+  date,
+  email,
+  amount,
+  lang,
+  client: fromClient,
+  className,
+}) => {
   return (
     <div
       className={buildString({
@@ -17,19 +23,20 @@ const ClientCard = ({ client, className }) => {
       <div className="flex flex-col items-center pt-4 pb-10 ">
         <div className="flex flex-col items-start">
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-            {client.firstName} {client.lastName}
+            {name}
           </h5>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            Client since {new Date(client.createdAt).toLocaleDateString()}
+            {fromClient ? client.since[lang] : provider.since[lang]}{" "}
+            {new Date(date).toLocaleDateString()}
           </span>
           <span className="text-md text-gray-900 dark:text-white">
-            Phone: {client.phone}
+            {generic.phone[lang]}: {phone}
           </span>
           <span className="text-md text-gray-900 dark:text-white">
-            Email: {client.email}
+            {generic.email[lang]}: {email}
           </span>
           <span className="text-md text-gray-900 dark:text-white">
-            Amount Spent: ${amountSpent}
+            {generic.amountSpent[lang]}: {amount}
           </span>
         </div>
       </div>
@@ -37,4 +44,4 @@ const ClientCard = ({ client, className }) => {
   );
 };
 
-export default ClientCard;
+export default Card;

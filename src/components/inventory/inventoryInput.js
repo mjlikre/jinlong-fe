@@ -10,7 +10,9 @@ import Button from "../generics/buttons";
 import Select from "../generics/select";
 import Modal from "../generics/modal";
 
-const InventoryInput = ({ providerId, fromPurchase }) => {
+import { generic, inventory } from "../../lib/language";
+
+const InventoryInput = ({ providerId, fromPurchase, lang }) => {
   const providerList = useSelector(providersSelector) || [];
   const dispatch = useDispatch();
 
@@ -59,7 +61,7 @@ const InventoryInput = ({ providerId, fromPurchase }) => {
     <>
       <Button
         type="normal"
-        text="Add New Inventory"
+        text={inventory.add[lang]}
         onClick={() => {
           setIsOpen(true);
         }}
@@ -69,11 +71,11 @@ const InventoryInput = ({ providerId, fromPurchase }) => {
         setIsOpen={() => {
           setIsOpen(!isOpen);
         }}
-        title="Add Inventory"
+        title={inventory.add[lang]}
       >
         <form className="w-full max-w-sm">
           <Input
-            label="Inventory Name"
+            label={generic.name[lang]}
             value={name}
             type="text"
             onChange={(e) => {
@@ -81,7 +83,7 @@ const InventoryInput = ({ providerId, fromPurchase }) => {
             }}
           />
           <Input
-            label="Price Bought"
+            label={generic.priceBought[lang]}
             value={priceBought}
             type="number"
             onChange={(e) => {
@@ -89,7 +91,7 @@ const InventoryInput = ({ providerId, fromPurchase }) => {
             }}
           />
           <Input
-            label="Quantity"
+            label={generic.quantity[lang]}
             value={quantity}
             type="number"
             onChange={(e) => {
@@ -97,7 +99,7 @@ const InventoryInput = ({ providerId, fromPurchase }) => {
             }}
           />
           <Input
-            label="Price To Sell"
+            label={generic.priceToSell[lang]}
             value={priceToSell}
             type="number"
             onChange={(e) => {
@@ -106,7 +108,7 @@ const InventoryInput = ({ providerId, fromPurchase }) => {
           />
           {!providerId && !fromPurchase && (
             <Select
-              label="Provider"
+              label={generic.provider[lang]}
               renderOptions={providerList.map((provider, index) => (
                 <option key={index} value={provider.id}>
                   {provider.providerName}

@@ -1,8 +1,15 @@
 import React from "react";
 
-const Table = ({ renderTHead, renderTBody }) => {
+import { buildString } from "../../../lib/utils";
+
+const Table = ({ renderTHead, renderTBody, className }) => {
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-h-96">
+    <div
+      className={buildString({
+        [`relative overflow-x-auto shadow-md sm:rounded-lg max-h-96`]: true,
+        [className]: true,
+      })}
+    >
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-500 dark:text-gray-100">
           {renderTHead()}

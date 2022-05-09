@@ -6,16 +6,18 @@ import { fetchedSelector } from "../../../store/fetched/selectors";
 import * as fetchedSlice from "../../../store/fetched";
 
 import Navbar from "../navbar";
+import { userSelector } from "../../../store/users/selectors";
 
 const BaseLayouts = ({ children, className }) => {
   const navigate = useNavigate();
   const authentication = localStorage.getItem("token");
+  const user = useSelector(userSelector);
   const fetched = useSelector(fetchedSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    !authentication && navigate("/signin");
-  }, [authentication]);
+    !user && !authentication && navigate("/signin");
+  }, [user, authentication]);
 
   useEffect(() => {
     !fetched && dispatch(fetchedSlice.thunks.fetch());

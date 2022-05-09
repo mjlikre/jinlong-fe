@@ -9,7 +9,9 @@ import Input from "../generics/input";
 import Button from "../generics/buttons";
 import Modal from "../generics/modal";
 
-const UpdateProvider = () => {
+import { generic, provider } from "../../lib/language";
+
+const UpdateProvider = ({ lang }) => {
   const update = useSelector(updateProviderSelector);
   const dispatch = useDispatch();
 
@@ -63,7 +65,7 @@ const UpdateProvider = () => {
       <Modal isOpen={isOpen} setIsOpen={onclose} title="Add Provider">
         <form className="w-full max-w-sm">
           <Input
-            label="Provider Name"
+            label={generic.provider[lang]}
             value={providerName}
             type="text"
             onChange={(e) => {
@@ -71,7 +73,7 @@ const UpdateProvider = () => {
             }}
           />
           <Input
-            label="Contact First Name"
+            label={provider.contact.fitstName[lang]}
             value={contactFirstName}
             type="text"
             onChange={(e) => {
@@ -79,7 +81,7 @@ const UpdateProvider = () => {
             }}
           />
           <Input
-            label="Contact Last Name"
+            label={provider.contact.lastName[lang]}
             value={contactLastName}
             type="text"
             onChange={(e) => {
@@ -87,7 +89,7 @@ const UpdateProvider = () => {
             }}
           />
           <Input
-            label="Phone"
+            label={generic.phone[lang]}
             value={contactPhone}
             type="text"
             onChange={(e) => {
@@ -95,7 +97,7 @@ const UpdateProvider = () => {
             }}
           />
           <Input
-            label="Email"
+            label={generic.email[lang]}
             value={contactEmail}
             type="text"
             onChange={(e) => {
@@ -103,7 +105,11 @@ const UpdateProvider = () => {
             }}
           />
           <div className="mt-4">
-            <Button type="normal" text="Update" onClick={onSubmit()} />
+            <Button
+              type="normal"
+              text={generic.update[lang]}
+              onClick={onSubmit()}
+            />
           </div>
         </form>
       </Modal>

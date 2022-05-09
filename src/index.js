@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 import App from "./App";
 import SignIn from "./components/signin";
 import SignUp from "./components/signup";
-import Main from "./components/main";
 import Sales from "./components/sales";
 import Sale from "./components/sales/sale";
 import Inventory from "./components/inventory";
@@ -19,6 +18,7 @@ import Clients from "./components/clients";
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./store";
 import ClientView from "./components/clients/clientView";
+import ProviderView from "./components/providers/providerView";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -30,13 +30,14 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/main" element={<Main />} />
         <Route path="/sales" element={<Sales />}>
           <Route path=":saleId/:index" element={<Sale />} />
           <Route path=":saleId" element={<Sale />} />
         </Route>
         <Route path="/inventory" element={<Inventory />} />
-        <Route path="/providers" element={<Providers />} />
+        <Route path="/providers" element={<Providers />}>
+          <Route path=":providerId/:index" element={<ProviderView />} />
+        </Route>
         <Route path="/purchases" element={<Purchases />}>
           <Route path=":purchaseId/:index" element={<Purchase />} />
           <Route path=":purchaseId" element={<Purchase />} />

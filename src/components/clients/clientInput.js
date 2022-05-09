@@ -7,9 +7,10 @@ import Input from "../generics/input";
 import Button from "../generics/buttons";
 import Modal from "../generics/modal";
 
-const ClientInput = () => {
-  const dispatch = useDispatch();
+import { generic, client } from "../../lib/language";
 
+const ClientInput = ({ lang }) => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -39,7 +40,7 @@ const ClientInput = () => {
   return (
     <>
       <Button
-        text="Add Client"
+        text={client.add[lang]}
         onClick={() => {
           setIsOpen(true);
         }}
@@ -50,11 +51,11 @@ const ClientInput = () => {
         setIsOpen={() => {
           setIsOpen(!isOpen);
         }}
-        title="Add Inventory"
+        title={client.add[lang]}
       >
         <form className="w-full max-w-sm">
           <Input
-            label="Client name"
+            label={generic.name[lang]}
             value={firstName}
             type="text"
             onChange={(e) => {
@@ -62,7 +63,7 @@ const ClientInput = () => {
             }}
           />
           <Input
-            label="Client lastname"
+            label={generic.lastName[lang]}
             value={lastName}
             type="text"
             onChange={(e) => {
@@ -70,7 +71,7 @@ const ClientInput = () => {
             }}
           />
           <Input
-            label="Client phone"
+            label={generic.phone[lang]}
             value={phone}
             type="text"
             onChange={(e) => {
@@ -78,7 +79,7 @@ const ClientInput = () => {
             }}
           />
           <Input
-            label="Client email"
+            label={generic.email[lang]}
             value={email}
             type="text"
             onChange={(e) => {
@@ -87,7 +88,11 @@ const ClientInput = () => {
           />
 
           <div className="mt-4">
-            <Button type="normal" text="Add" onClick={onSubmit()} />
+            <Button
+              type="normal"
+              text={generic.add[lang]}
+              onClick={onSubmit()}
+            />
           </div>
         </form>
       </Modal>
