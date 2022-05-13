@@ -52,31 +52,25 @@ export const updatePurchase =
     }
   };
 
-export const setPurchase =
-  (purchaseId, callback) => async (dispatch, getState) => {
-    const state = getState();
-    const {
-      purchase: { purchases },
-    } = state;
-    try {
-      const stringifiedPurchase = R.find(R.propEq("id", purchaseId))(purchases);
-      const { providerId, amount, itemsPurchased, provider } =
-        stringifiedPurchase;
-      const purchase = {
-        providerId,
-        amount,
-        itemsPurchased,
-        open: true,
-        newItemsAdded: [],
-        provider,
-      };
-      purchase && dispatch(purchasesSlice.actions.setPurchase({ purchase }));
-      callback && callback();
-    } catch (e) {
-      callback && callback(e);
-      throw e;
-    }
-  };
+export const setPurchase = (index, callback) => async (dispatch, getState) => {
+  const state = getState();
+  console.log("here?");
+  const {
+    purchase: { purchases },
+  } = state;
+  try {
+    const purchase = {
+      ...purchases[index],
+      open: true,
+      newItemsAdded: [],
+    };
+    purchase && dispatch(purchasesSlice.actions.setPurchase({ purchase }));
+    callback && callback();
+  } catch (e) {
+    callback && callback(e);
+    throw e;
+  }
+};
 
 export const inventoriesToUpdate =
   (inventory, callback) => async (dispatch, getState) => {

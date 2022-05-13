@@ -19,12 +19,15 @@ export const getSales = () => async (dispatch) => {
   }
 };
 
-export const setSale = (salesId, callback) => async (dispatch, getState) => {
+export const setSale = (index, callback) => async (dispatch, getState) => {
   const {
     sales: { sales },
   } = getState();
   try {
-    const sale = R.find(R.propEq("id", salesId))(sales);
+    const sale = {
+      ...sales[index],
+      open: true,
+    };
     dispatch(salesSlice.actions.setSale({ sale }));
     callback && callback();
   } catch (e) {
@@ -32,17 +35,6 @@ export const setSale = (salesId, callback) => async (dispatch, getState) => {
     throw e;
   }
 };
-
-// export const deleteSale =
-//   ({ salesId, index }) =>
-//   async (dispatch) => {
-//     try {
-//       await makeRequest(`sales/${salesId}`, "delete", null, dispatch);
-//       dispatch(salesSlice.actions.deleteSale({ index }));
-//     } catch (e) {
-//       throw e;
-//     }
-//   };
 
 export const updateSale =
   ({ salesId, update, index }) =>

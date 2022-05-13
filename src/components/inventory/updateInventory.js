@@ -9,7 +9,9 @@ import Input from "../generics/input";
 import Button from "../generics/buttons";
 import Modal from "../generics/modal";
 
-const UpdateInventory = () => {
+import { generic, inventory } from "../../lib/language";
+
+const UpdateInventory = ({ lang }) => {
   const update = useSelector(inventoryUpdateSelector);
   const dispatch = useDispatch();
 
@@ -57,10 +59,10 @@ const UpdateInventory = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} setIsOpen={onclose} title="Add Inventory">
+      <Modal isOpen={isOpen} setIsOpen={onclose} title={inventory.add[lang]}>
         <form className="w-full max-w-sm">
           <Input
-            label="Inventory Name"
+            label={generic.name[lang]}
             value={name}
             type="text"
             onChange={(e) => {
@@ -68,7 +70,7 @@ const UpdateInventory = () => {
             }}
           />
           <Input
-            label="Price Bought"
+            label={generic.priceBought[lang]}
             value={priceBought}
             type="number"
             onChange={(e) => {
@@ -76,7 +78,7 @@ const UpdateInventory = () => {
             }}
           />
           <Input
-            label="Quantity"
+            label={generic.quantity[lang]}
             value={quantity}
             type="number"
             onChange={(e) => {
@@ -84,7 +86,7 @@ const UpdateInventory = () => {
             }}
           />
           <Input
-            label="Price To Sell"
+            label={generic.priceToSell[lang]}
             value={priceToSell}
             type="number"
             onChange={(e) => {

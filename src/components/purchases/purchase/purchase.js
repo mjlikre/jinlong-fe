@@ -17,8 +17,11 @@ import PurchaseContent from "./purchaseContent";
 import Button from "../../generics/buttons";
 import Input from "../../generics/input";
 import DisabledInput from "../../generics/input/disabled";
+import { generic, purchase as purchaseLang } from "../../../lib/language";
+import { userDisplayLanguageSelector } from "../../../store/users/selectors";
 
 const Purchase = () => {
+  const lang = useSelector(userDisplayLanguageSelector);
   const { purchaseId, index = -1 } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,7 +35,7 @@ const Purchase = () => {
     if (purchaseId !== "new") {
       fetched &&
         dispatch(
-          purchasesSlice.thunks.setPurchase(purchaseId, () => setViewOnly(true))
+          purchasesSlice.thunks.setPurchase(index, () => setViewOnly(true))
         );
     } else {
       dispatch(purchasesSlice.actions.setPurchaseEdit({ purchaseState: true }));
@@ -75,70 +78,77 @@ const Purchase = () => {
 
   return (
     <>
-      <div className="flex w-full justify-around">
+      <div className="flex w-full justify-around pt-10">
         <div className="w-8/12">
-          {viewOnly ? (
-            <DisabledInput
-              label="Provider"
-              value={purchase.provider.providerName}
-            />
-          ) : (
-            <Select
-              label="Provider"
-              renderOptions={providerList.map((provider, index) => (
-                <option key={index} value={provider.id}>
-                  {provider.providerName}
-                </option>
-              ))}
-              onChange={(e) => {
-                setProviderId(e.target.value);
-              }}
-            />
-          )}
+          <p className="font-light">{purchaseLang.items[lang]}</p>
+          <PurchaseContent
+            inventories={purchase.itemsPurchased}
+            viewOnly={viewOnly}
+            lang={lang}
+          />
         </div>
-        {!viewOnly && (
-          <div className="w-3-12">
-            <ProviderInput />
-          </div>
-        )}
-      </div>
-      {purchase.providerId && !viewOnly && (
-        <div className="flex w-full justify-around">
-          <AddInventory providerId={purchase.providerId} />
-          <InventoryInput fromPurchase providerId={purchase.providerId} />
-        </div>
-      )}
-
-      <div className="w-full pt-5">
-        <p className="font-light">Items purchased</p>
-
-        <PurchaseContent
-          inventories={purchase.itemsPurchased}
-          viewOnly={viewOnly}
-        />
-      </div>
-      <div className="w-full pt-5 flex justify-around">
-        <div className="w-8/12">
+        <div className="w-3/12 bg-sky-50 p-5 rounded-lg">
           {viewOnly ? (
-            <DisabledInput label="Total Amount" value={amount} />
-          ) : (
-            <Input
-              label="Total Amount: "
-              value={amount}
-              type="number"
-              onChange={(e) => {
-                setAmount(e.target.value);
-              }}
-            />
-          )}
-        </div>
-        <div className="w-3-12">
-          {viewOnly ? (
-            <Button type="cancel" text="Delete" onClick={onDelete} />
+            <div className="flex flex-col justify-end">
+              <DisabledInput
+                label={generic.provider[lang]}
+                value={purchase.provider.providerName}
+              />
+              <DisabledInput label={generic.totalAmount[lang]} value={amount} />
+              <Button
+                type="cancel"
+                text={generic.delete[lang]}
+                onClick={onDelete}
+              />
+            </div>
           ) : (
             <>
-              <Button type="cancel" text="Cancel" onClick={onCancel} />
-              <Button type="normal" text="Submit" onClick={onSubmit} />
+              <Select
+                label={generic.provider[lang]}
+                renderOptions={providerList.map((provider, index) => (
+                  <option key={index} value={provider.id}>
+                    {provider.providerName}
+                  </option>
+                ))}
+                onChange={(e) => {
+                  setProviderId(e.target.value);
+                }}
+              />
+
+              {purchase.providerId ? (
+                <div className="pb-4 flex justify-end space-x-4">
+                  <AddInventory providerId={purchase.providerId} lang={lang} />
+                  <InventoryInput
+                    fromPurchase
+                    providerId={purchase.providerId}
+                    lang={lang}
+                  />
+                </div>
+              ) : (
+                <div className="pb-4 flex justify-end space-x-4">
+                  <ProviderInput lang={lang} />
+                </div>
+              )}
+              <Input
+                label={`${generic.totalAmount[lang]}: `}
+                value={amount}
+                type="number"
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+              />
+              <div className="flex justify-end space-x-4">
+                <Button
+                  type="cancel"
+                  text={generic.cancel[lang]}
+                  onClick={onCancel}
+                />
+                <Button
+                  type="normal"
+                  text={generic.submit[lang]}
+                  onClick={onSubmit}
+                />
+              </div>
             </>
           )}
         </div>

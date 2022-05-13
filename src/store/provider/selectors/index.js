@@ -10,17 +10,9 @@ export const providersSelector = createSelector(
   R.propOr([], "providers")
 );
 
-export const providerIdSelector = createSelector(
-  baseSelector,
-  R.propOr("", "provider")
-);
-
 export const providerSelector = createSelector(
-  providersSelector,
-  providerIdSelector,
-  (providers, providerId) => {
-    return R.find(R.propEq("id", providerId), providers);
-  }
+  baseSelector,
+  R.propOr(false, "provider")
 );
 
 export const updateProviderSelector = createSelector(

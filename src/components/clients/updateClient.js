@@ -9,7 +9,9 @@ import Input from "../generics/input";
 import Button from "../generics/buttons";
 import Modal from "../generics/modal";
 
-const UpdateClient = () => {
+import { generic, client } from "../../lib/language";
+
+const UpdateClient = ({ lang }) => {
   const update = useSelector(updateClientSelector);
   const dispatch = useDispatch();
 
@@ -57,10 +59,10 @@ const UpdateClient = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} setIsOpen={onclose} title="Add Inventory">
+      <Modal isOpen={isOpen} setIsOpen={onclose} title={client.add[lang]}>
         <form className="w-full max-w-sm">
           <Input
-            label="Client name"
+            label={generic.name[lang]}
             value={firstName}
             type="text"
             onChange={(e) => {
@@ -68,7 +70,7 @@ const UpdateClient = () => {
             }}
           />
           <Input
-            label="Client lastname"
+            label={generic.lastName[lang]}
             value={lastName}
             type="text"
             onChange={(e) => {
@@ -76,7 +78,7 @@ const UpdateClient = () => {
             }}
           />
           <Input
-            label="Client phone"
+            label={generic.phone[lang]}
             value={phone}
             type="text"
             onChange={(e) => {
@@ -84,7 +86,7 @@ const UpdateClient = () => {
             }}
           />
           <Input
-            label="Client email"
+            label={generic.email[lang]}
             value={email}
             type="text"
             onChange={(e) => {
@@ -92,7 +94,11 @@ const UpdateClient = () => {
             }}
           />
           <div className="mt-4">
-            <Button type="normal" text="Update" onClick={onSubmit()} />
+            <Button
+              type="normal"
+              text={generic.update[lang]}
+              onClick={onSubmit()}
+            />
           </div>
         </form>
       </Modal>

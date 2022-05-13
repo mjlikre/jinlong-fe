@@ -10,27 +10,25 @@ export const getClients = () => async (dispatch) => {
   }
 };
 
-export const getClient =
-  ({ clientId }) =>
-  async (dispatch) => {
-    try {
-      const res = await makeRequest(
-        `client/${clientId}`,
-        "get",
-        null,
-        dispatch
-      );
-      dispatch(clientSlice.actions.setClient({ client: res.data }));
-    } catch (e) {
-      throw e;
-    }
-  };
+export const getClient = (clientId) => async (dispatch) => {
+  try {
+    const { data } = await makeRequest(
+      `client/${clientId}`,
+      "get",
+      null,
+      dispatch
+    );
+    dispatch(clientSlice.actions.setClient({ client: data }));
+  } catch (e) {
+    throw e;
+  }
+};
 
 export const deleteClient =
   ({ clientId, index }) =>
   async (dispatch) => {
     try {
-      await makeRequest(`inventory/${clientId}`, "delete", null, dispatch);
+      await makeRequest(`client/${clientId}`, "delete", null, dispatch);
       dispatch(clientSlice.actions.deleteClient({ index }));
     } catch (e) {
       throw e;

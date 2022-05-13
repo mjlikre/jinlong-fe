@@ -6,8 +6,12 @@ import * as userSlice from "../../store/users";
 
 import Navbar from "../layouts/navbar/partialNavbar";
 import Button from "../generics/buttons";
+import Input from "../generics/input";
+
+import { generic } from "../../lib/language";
 
 const SignUp = () => {
+  const lang = localStorage.getItem("language");
   const [userName, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
@@ -25,13 +29,12 @@ const SignUp = () => {
   };
 
   const authenticate = (e) => {
-    !e && navigate("/main");
+    !e && navigate("/sales");
   };
 
   const onSubmit = () => () => {
     const error = errorCheck();
     setError(error);
-    console.log("hehe");
     if (!error) {
       dispatch(userSlice.thunks.signup({ userName, password }, authenticate));
     }
@@ -41,43 +44,39 @@ const SignUp = () => {
     <>
       <Navbar />
       <div className="flex items-center justify-center pt-36">
-        <div className="w-full max-w-xs">
+        <div className="w-96">
           <form
             className={`bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ${
               error ? "shadow-red-500" : null
             }`}
           >
             <p className="text-red-500 text-xs italic">{error}</p>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Username
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username"
-                type="text"
-                placeholder="Username"
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Password
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="password"
-                type="password"
-                placeholder="*********"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </div>
+            <p className="text-2xl">{generic.signUp[lang]}</p>
+            <Input
+              label={generic.username[lang]}
+              value={userName}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              type="text"
+              placeholder="Username"
+            />
+
+            <Input
+              label={generic.password[lang]}
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              type="text"
+              placeholder="********"
+            />
             <div className="flex items-center justify-between">
-              <Button type="normal" onClick={onSubmit()} text="Sign Up" />
+              <Button
+                type="normal"
+                onClick={onSubmit()}
+                text={generic.signUp[lang]}
+              />
             </div>
           </form>
         </div>

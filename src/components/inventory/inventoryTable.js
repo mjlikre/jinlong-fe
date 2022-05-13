@@ -6,7 +6,9 @@ import * as inventorySlice from "../../store/inventory";
 
 import Table from "../generics/table";
 
-const InventoryTable = () => {
+import { generic } from "../../lib/language";
+
+const InventoryTable = ({ lang }) => {
   const inventories = useSelector(inventoriesSelector) || [];
   const dispatch = useDispatch();
   const renderTHead = () => (
@@ -15,16 +17,16 @@ const InventoryTable = () => {
         #
       </th>
       <th scope="col" className="px-6 py-3">
-        Product name
+        {generic.productName[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        Quantity
+        {generic.quantity[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        Sell Price
+        {generic.priceToSell[lang]}
       </th>
       <th scope="col" className="px-6 py-3">
-        <span>Edit</span>
+        <span>{generic.edit[lang]}</span>
       </th>
     </tr>
   );
@@ -56,7 +58,7 @@ const InventoryTable = () => {
             onClick={setInventoryUpdate({ ...inventory, index })}
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
-            Edit
+            {generic.edit[lang]}
           </div>
         </td>
       </tr>
