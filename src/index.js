@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import { Provider } from "react-redux";
 
-import App from "./App";
 import SignIn from "./components/signin";
 import SignUp from "./components/signup";
 import Sales from "./components/sales";
@@ -27,7 +26,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<Sales />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/sales" element={<Sales />}>

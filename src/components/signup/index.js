@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import * as userSlice from "../../store/users";
 
-import Navbar from "../layouts/navbar/partialNavbar";
+import Navbar from "../layouts/navbar";
 import Button from "../generics/buttons";
 import Input from "../generics/input";
 
@@ -16,7 +15,6 @@ const SignUp = () => {
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const errorCheck = () => {
     if (!userName) return "Username field must not be empty";
@@ -28,15 +26,11 @@ const SignUp = () => {
     return null;
   };
 
-  const authenticate = (e) => {
-    !e && navigate("/sales");
-  };
-
   const onSubmit = () => () => {
     const error = errorCheck();
     setError(error);
     if (!error) {
-      dispatch(userSlice.thunks.signup({ userName, password }, authenticate));
+      dispatch(userSlice.thunks.signup({ userName, password }));
     }
   };
 

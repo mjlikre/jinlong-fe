@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import * as userSlice from "../../store/users";
 
-import Navbar from "../layouts/navbar/partialNavbar";
+import Navbar from "../layouts/navbar";
 import Button from "../generics/buttons";
 import Input from "../generics/input";
 import { generic } from "../../lib/language";
 
 const SignIn = () => {
   const lang = localStorage.getItem("language");
+  const auth = localStorage.getItem("token");
   const [userName, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const authenticate = (e) => {
-    !e && navigate("/sales");
+    !e && navigate("/");
   };
 
   const onSubmit = () => () => {
     dispatch(userSlice.thunks.signin({ userName, password }, authenticate));
   };
+
+  useEffect(() => {
+    auth && navigate("/");
+  });
 
   return (
     <>
